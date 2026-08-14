@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kwitansi Digital — Buat Bukti Pembayaran Tanpa Kertas</title>
+<meta name="description" content="Isi form sekali, kwitansi langsung jadi. Cetak PDF rapi tanpa buku kwitansi, tanpa tulis tangan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<style id="tailwind-static">/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
+@layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-rotate-x:initial;--tw-rotate-y:initial;--tw-rotate-z:initial;--tw-skew-x:initial;--tw-skew-y:initial;--tw-space-y-reverse:0;--tw-border-style:solid;--tw-leading:initial;--tw-font-weight:initial;--tw-tracking:initial;--tw-ordinal:initial;--tw-slashed-zero:initial;--tw-numeric-figure:initial;--tw-numeric-spacing:initial;--tw-numeric-fraction:initial;--tw-shadow:0 0 #0000;--tw-shadow-color:initial;--tw-shadow-alpha:100%;--tw-inset-shadow:0 0 #0000;--tw-inset-shadow-color:initial;--tw-inset-shadow-alpha:100%;--tw-ring-color:initial;--tw-ring-shadow:0 0 #0000;--tw-inset-ring-color:initial;--tw-inset-ring-shadow:0 0 #0000;--tw-ring-inset:initial;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-offset-shadow:0 0 #0000;--tw-outline-style:solid;--tw-blur:initial;--tw-brightness:initial;--tw-contrast:initial;--tw-grayscale:initial;--tw-hue-rotate:initial;--tw-invert:initial;--tw-opacity:initial;--tw-saturate:initial;--tw-sepia:initial;--tw-drop-shadow:initial;--tw-drop-shadow-color:initial;--tw-drop-shadow-alpha:100%;--tw-drop-shadow-size:initial;--tw-backdrop-blur:initial;--tw-backdrop-brightness:initial;--tw-backdrop-contrast:initial;--tw-backdrop-grayscale:initial;--tw-backdrop-hue-rotate:initial;--tw-backdrop-invert:initial;--tw-backdrop-opacity:initial;--tw-backdrop-saturate:initial;--tw-backdrop-sepia:initial;--tw-ease:initial}}}@layer theme{:root,:host{--font-sans:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";--font-mono:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;--color-white:#fff;--spacing:.25rem;--container-6xl:72rem;--text-xs:.75rem;--text-xs--line-height:calc(1 / .75);--text-sm:.875rem;--text-sm--line-height:calc(1.25 / .875);--text-lg:1.125rem;--text-lg--line-height:calc(1.75 / 1.125);--text-xl:1.25rem;--text-xl--line-height:calc(1.75 / 1.25);--font-weight-semibold:600;--font-weight-bold:700;--tracking-wide:.025em;--tracking-widest:.1em;--leading-tight:1.25;--leading-snug:1.375;--radius-lg:.5rem;--radius-xl:.75rem;--ease-in:cubic-bezier(.4, 0, 1, 1);--ease-out:cubic-bezier(0, 0, .2, 1);--ease-in-out:cubic-bezier(.4, 0, .2, 1);--default-transition-duration:.15s;--default-transition-timing-function:cubic-bezier(.4, 0, .2, 1);--default-font-family:var(--font-sans);--default-mono-font-family:var(--font-mono)}}@layer base{*,:after,:before,::backdrop{box-sizing:border-box;border:0 solid;margin:0;padding:0}::file-selector-button{box-sizing:border-box;border:0 solid;margin:0;padding:0}html,:host{-webkit-text-size-adjust:100%;tab-size:4;line-height:1.5;font-family:var(--default-font-family,-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji");font-feature-settings:var(--default-font-feature-settings,normal);font-variation-settings:var(--default-font-variation-settings,normal);-webkit-tap-highlight-color:transparent}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;-webkit-text-decoration:inherit;-webkit-text-decoration:inherit;-webkit-text-decoration:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,samp,pre{font-family:var(--default-mono-font-family,ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);font-feature-settings:var(--default-mono-font-feature-settings,normal);font-variation-settings:var(--default-mono-font-variation-settings,normal);font-size:1em}small{font-size:80%}sub,sup{vertical-align:baseline;font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}:-moz-focusring:where(:not(iframe)){outline:auto}progress{vertical-align:baseline}summary{display:list-item}ol,ul,menu{list-style:none}img,svg,video,canvas,audio,iframe,embed,object{vertical-align:middle;display:block}img,video{max-width:100%;height:auto}button,input,select,optgroup,textarea{font:inherit;font-feature-settings:inherit;font-variation-settings:inherit;letter-spacing:inherit;color:inherit;opacity:1;background-color:#0000;border-radius:0}::file-selector-button{font:inherit;font-feature-settings:inherit;font-variation-settings:inherit;letter-spacing:inherit;color:inherit;opacity:1;background-color:#0000;border-radius:0}:where(select:is([multiple],[size])) optgroup{font-weight:bolder}:where(select:is([multiple],[size])) optgroup option{padding-inline-start:20px}::file-selector-button{margin-inline-end:4px}::placeholder{opacity:1}@supports (not ((-webkit-appearance:-apple-pay-button))) or (contain-intrinsic-size:1px){::placeholder{color:currentColor}@supports (color:color-mix(in lab, red, red)){::placeholder{color:color-mix(in oklab, currentcolor 50%, transparent)}}}textarea{resize:vertical}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-date-and-time-value{min-height:1lh;text-align:inherit}::-webkit-datetime-edit{display:inline-flex}::-webkit-datetime-edit-fields-wrapper{padding:0}::-webkit-datetime-edit{padding-block:0}::-webkit-datetime-edit-year-field{padding-block:0}::-webkit-datetime-edit-month-field{padding-block:0}::-webkit-datetime-edit-day-field{padding-block:0}::-webkit-datetime-edit-hour-field{padding-block:0}::-webkit-datetime-edit-minute-field{padding-block:0}::-webkit-datetime-edit-second-field{padding-block:0}::-webkit-datetime-edit-millisecond-field{padding-block:0}::-webkit-datetime-edit-meridiem-field{padding-block:0}::-webkit-calendar-picker-indicator{line-height:1}:-moz-ui-invalid{box-shadow:none}button,input:where([type=button],[type=reset],[type=submit]){appearance:button}::file-selector-button{appearance:button}::-webkit-inner-spin-button{height:auto}::-webkit-outer-spin-button{height:auto}[hidden]:where(:not([hidden=until-found])){display:none!important}}@layer components;@layer utilities{.\@container{container-type:inline-size}.collapse{visibility:collapse}.invisible{visibility:hidden}.visible{visibility:visible}.absolute{position:absolute}.fixed{position:fixed}.relative{position:relative}.static{position:static}.sticky{position:sticky}.isolate{isolation:isolate}.z-4{z-index:4}.container{width:100%}@media (min-width:40rem){.container{max-width:40rem}}@media (min-width:48rem){.container{max-width:48rem}}@media (min-width:64rem){.container{max-width:64rem}}@media (min-width:80rem){.container{max-width:80rem}}@media (min-width:96rem){.container{max-width:96rem}}.mx-auto{margin-inline:auto}.my-3{margin-block:calc(var(--spacing) * 3)}.-mt-2{margin-top:calc(var(--spacing) * -2)}.mt-0\.5{margin-top:calc(var(--spacing) * .5)}.mt-1\.5{margin-top:calc(var(--spacing) * 1.5)}.mt-2{margin-top:calc(var(--spacing) * 2)}.\!mb-0{margin-bottom:0!important}.mb-1{margin-bottom:var(--spacing)}.mb-2{margin-bottom:calc(var(--spacing) * 2)}.mb-4{margin-bottom:calc(var(--spacing) * 4)}.block{display:block}.contents{display:contents}.flex{display:flex}.flow-root{display:flow-root}.grid{display:grid}.hidden{display:none}.inline{display:inline}.inline\!{display:inline!important}.inline-block{display:inline-block}.inline-flex{display:inline-flex}.inline-grid{display:inline-grid}.inline-table{display:inline-table}.list-item{display:list-item}.table{display:table}.table-caption{display:table-caption}.table-cell{display:table-cell}.table-column{display:table-column}.table-column-group{display:table-column-group}.table-footer-group{display:table-footer-group}.table-header-group{display:table-header-group}.table-row{display:table-row}.table-row-group{display:table-row-group}.h-5{height:calc(var(--spacing) * 5)}.h-10{height:calc(var(--spacing) * 10)}.h-12{height:calc(var(--spacing) * 12)}.h-14{height:calc(var(--spacing) * 14)}.h-28{height:calc(var(--spacing) * 28)}.w-10{width:calc(var(--spacing) * 10)}.w-14{width:calc(var(--spacing) * 14)}.w-full{width:100%}.max-w-6xl{max-width:var(--container-6xl)}.min-w-0{min-width:0}.min-w-\[8rem\]{min-width:8rem}.min-w-\[9rem\]{min-width:9rem}.flex-1{flex:1}.flex-shrink,.shrink{flex-shrink:1}.shrink-0{flex-shrink:0}.flex-grow,.grow{flex-grow:1}.border-collapse{border-collapse:collapse}.transform{transform:var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,)}.cursor-pointer{cursor:pointer}.resize{resize:both}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}.items-end{align-items:flex-end}.items-start{align-items:flex-start}.justify-between{justify-content:space-between}.justify-center{justify-content:center}.justify-end{justify-content:flex-end}.gap-1{gap:var(--spacing)}.gap-1\.5{gap:calc(var(--spacing) * 1.5)}.gap-2{gap:calc(var(--spacing) * 2)}.gap-2\.5{gap:calc(var(--spacing) * 2.5)}.gap-3{gap:calc(var(--spacing) * 3)}.gap-4{gap:calc(var(--spacing) * 4)}.gap-6{gap:calc(var(--spacing) * 6)}:where(.space-y-2>:not(:last-child)){--tw-space-y-reverse:0;margin-block-start:calc(calc(var(--spacing) * 2) * var(--tw-space-y-reverse));margin-block-end:calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-y-reverse)))}:where(.space-y-3>:not(:last-child)){--tw-space-y-reverse:0;margin-block-start:calc(calc(var(--spacing) * 3) * var(--tw-space-y-reverse));margin-block-end:calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-y-reverse)))}:where(.space-y-4>:not(:last-child)){--tw-space-y-reverse:0;margin-block-start:calc(calc(var(--spacing) * 4) * var(--tw-space-y-reverse));margin-block-end:calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-y-reverse)))}:where(.space-y-5>:not(:last-child)){--tw-space-y-reverse:0;margin-block-start:calc(calc(var(--spacing) * 5) * var(--tw-space-y-reverse));margin-block-end:calc(calc(var(--spacing) * 5) * calc(1 - var(--tw-space-y-reverse)))}.self-end{align-self:flex-end}.self-start{align-self:flex-start}.truncate{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.rounded{border-radius:.25rem}.rounded-lg{border-radius:var(--radius-lg)}.rounded-xl{border-radius:var(--radius-xl)}.border{border-style:var(--tw-border-style);border-width:1px}.border-2{border-style:var(--tw-border-style);border-width:2px}.border-b{border-bottom-style:var(--tw-border-style);border-bottom-width:1px}.border-dashed{--tw-border-style:dashed;border-style:dashed}.mask-repeat{-webkit-mask-repeat:repeat;mask-repeat:repeat}.object-contain{object-fit:contain}.\!p-0{padding:0!important}.p-0{padding:0}.p-4{padding:calc(var(--spacing) * 4)}.p-6{padding:calc(var(--spacing) * 6)}.\!px-3{padding-inline:calc(var(--spacing) * 3)!important}.px-1{padding-inline:var(--spacing)}.px-2{padding-inline:calc(var(--spacing) * 2)}.px-5{padding-inline:calc(var(--spacing) * 5)}.\!py-1\.5{padding-block:calc(var(--spacing) * 1.5)!important}.py-4{padding-block:calc(var(--spacing) * 4)}.py-6{padding-block:calc(var(--spacing) * 6)}.pt-0\.5{padding-top:calc(var(--spacing) * .5)}.pt-1{padding-top:var(--spacing)}.pt-2{padding-top:calc(var(--spacing) * 2)}.pb-3{padding-bottom:calc(var(--spacing) * 3)}.pb-10{padding-bottom:calc(var(--spacing) * 10)}.text-center{text-align:center}.text-right{text-align:right}.font-mono{font-family:var(--font-mono)}.font-sans{font-family:var(--font-sans)}.text-lg{font-size:var(--text-lg);line-height:var(--tw-leading,var(--text-lg--line-height))}.text-sm{font-size:var(--text-sm);line-height:var(--tw-leading,var(--text-sm--line-height))}.text-xl{font-size:var(--text-xl);line-height:var(--tw-leading,var(--text-xl--line-height))}.text-xs{font-size:var(--text-xs);line-height:var(--tw-leading,var(--text-xs--line-height))}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.leading-snug{--tw-leading:var(--leading-snug);line-height:var(--leading-snug)}.leading-tight{--tw-leading:var(--leading-tight);line-height:var(--leading-tight)}.font-bold{--tw-font-weight:var(--font-weight-bold);font-weight:var(--font-weight-bold)}.font-semibold{--tw-font-weight:var(--font-weight-semibold);font-weight:var(--font-weight-semibold)}.tracking-wide{--tw-tracking:var(--tracking-wide);letter-spacing:var(--tracking-wide)}.tracking-widest{--tw-tracking:var(--tracking-widest);letter-spacing:var(--tracking-widest)}.text-wrap{text-wrap:wrap}.break-words{overflow-wrap:break-word}.break-all{word-break:break-all}.whitespace-pre-line{white-space:pre-line}.text-white{color:var(--color-white)}.capitalize{text-transform:capitalize}.lowercase{text-transform:lowercase}.uppercase{text-transform:uppercase}.italic{font-style:italic}.diagonal-fractions{--tw-numeric-fraction:diagonal-fractions;font-variant-numeric:var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,)}.lining-nums{--tw-numeric-figure:lining-nums;font-variant-numeric:var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,)}.oldstyle-nums{--tw-numeric-figure:oldstyle-nums;font-variant-numeric:var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,)}.ordinal{--tw-ordinal:ordinal;font-variant-numeric:var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,)}.proportional-nums{--tw-numeric-spacing:proportional-nums;font-variant-numeric:var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,)}.slashed-zero{--tw-slashed-zero:slashed-zero;font-variant-numeric:var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,)}.stacked-fractions{--tw-numeric-fraction:stacked-fractions;font-variant-numeric:var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,)}.tabular-nums{--tw-numeric-spacing:tabular-nums;font-variant-numeric:var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,)}.line-through{text-decoration-line:line-through}.overline{text-decoration-line:overline}.underline{text-decoration-line:underline}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.subpixel-antialiased{-webkit-font-smoothing:auto;-moz-osx-font-smoothing:auto}.shadow{--tw-shadow:0 1px 3px 0 var(--tw-shadow-color,#0000001a), 0 1px 2px -1px var(--tw-shadow-color,#0000001a);box-shadow:var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}.ring{--tw-ring-shadow:var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color,currentcolor);box-shadow:var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}.outline{outline-style:var(--tw-outline-style);outline-width:1px}.blur{--tw-blur:blur(8px);filter:var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,)}.drop-shadow{--tw-drop-shadow-size:drop-shadow(0 1px 2px var(--tw-drop-shadow-color,#0000001a)) drop-shadow(0 1px 1px var(--tw-drop-shadow-color,#0000000f));--tw-drop-shadow:drop-shadow(0 1px 2px #0000001a) drop-shadow(0 1px 1px #0000000f);filter:var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,)}.grayscale{--tw-grayscale:grayscale(100%);filter:var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,)}.invert{--tw-invert:invert(100%);filter:var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,)}.sepia{--tw-sepia:sepia(100%);filter:var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,)}.\!filter{filter:var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,)!important}.filter{filter:var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,)}.backdrop-filter{-webkit-backdrop-filter:var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);backdrop-filter:var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,)}.transition{transition-property:color,background-color,border-color,outline-color,text-decoration-color,fill,stroke,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,opacity,box-shadow,transform,translate,scale,rotate,filter,-webkit-backdrop-filter,backdrop-filter,display,content-visibility,overlay,pointer-events;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}.ease-in{--tw-ease:var(--ease-in);transition-timing-function:var(--ease-in)}.ease-in-out{--tw-ease:var(--ease-in-out);transition-timing-function:var(--ease-in-out)}.ease-out{--tw-ease:var(--ease-out);transition-timing-function:var(--ease-out)}.will-change-transform{will-change:transform}.select-all{-webkit-user-select:all;user-select:all}.\[category\:memory-infra\]{category:memory-infra}@media (min-width:40rem){.sm\:hidden{display:none}.sm\:inline-flex{display:inline-flex}}@media (min-width:64rem){.lg\:sticky{position:sticky}.lg\:top-6{top:calc(var(--spacing) * 6)}.lg\:hidden{display:none}.lg\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}}@property --tw-rotate-x{syntax:"*";inherits:false}@property --tw-rotate-y{syntax:"*";inherits:false}@property --tw-rotate-z{syntax:"*";inherits:false}@property --tw-skew-x{syntax:"*";inherits:false}@property --tw-skew-y{syntax:"*";inherits:false}@property --tw-space-y-reverse{syntax:"*";inherits:false;initial-value:0}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-leading{syntax:"*";inherits:false}@property --tw-font-weight{syntax:"*";inherits:false}@property --tw-tracking{syntax:"*";inherits:false}@property --tw-ordinal{syntax:"*";inherits:false}@property --tw-slashed-zero{syntax:"*";inherits:false}@property --tw-numeric-figure{syntax:"*";inherits:false}@property --tw-numeric-spacing{syntax:"*";inherits:false}@property --tw-numeric-fraction{syntax:"*";inherits:false}@property --tw-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-shadow-color{syntax:"*";inherits:false}@property --tw-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-inset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-shadow-color{syntax:"*";inherits:false}@property --tw-inset-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-ring-color{syntax:"*";inherits:false}@property --tw-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-ring-color{syntax:"*";inherits:false}@property --tw-inset-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-ring-inset{syntax:"*";inherits:false}@property --tw-ring-offset-width{syntax:"<length>";inherits:false;initial-value:0}@property --tw-ring-offset-color{syntax:"*";inherits:false;initial-value:#fff}@property --tw-ring-offset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-outline-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-blur{syntax:"*";inherits:false}@property --tw-brightness{syntax:"*";inherits:false}@property --tw-contrast{syntax:"*";inherits:false}@property --tw-grayscale{syntax:"*";inherits:false}@property --tw-hue-rotate{syntax:"*";inherits:false}@property --tw-invert{syntax:"*";inherits:false}@property --tw-opacity{syntax:"*";inherits:false}@property --tw-saturate{syntax:"*";inherits:false}@property --tw-sepia{syntax:"*";inherits:false}@property --tw-drop-shadow{syntax:"*";inherits:false}@property --tw-drop-shadow-color{syntax:"*";inherits:false}@property --tw-drop-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-drop-shadow-size{syntax:"*";inherits:false}@property --tw-backdrop-blur{syntax:"*";inherits:false}@property --tw-backdrop-brightness{syntax:"*";inherits:false}@property --tw-backdrop-contrast{syntax:"*";inherits:false}@property --tw-backdrop-grayscale{syntax:"*";inherits:false}@property --tw-backdrop-hue-rotate{syntax:"*";inherits:false}@property --tw-backdrop-invert{syntax:"*";inherits:false}@property --tw-backdrop-opacity{syntax:"*";inherits:false}@property --tw-backdrop-saturate{syntax:"*";inherits:false}@property --tw-backdrop-sepia{syntax:"*";inherits:false}@property --tw-ease{syntax:"*";inherits:false}</style>
+<style id="dynamic-page-size">@page { size: A4; margin: 12mm; }</style>
+<style>
+  :root{
+    --ink:#22303F;
+    --ink-soft:#5B6B7D;
+    --paper:#FBF7EC;
+    --paper-line:#DBCFAE;
+    --stamp:#B23A2E;
+    --stamp-dark:#8F2E24;
+    --shell:#EAEDE7;
+    --card:#FFFFFF;
+    --card-border:#DDE2DA;
+    --ledger-green:#2F6E51;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--shell);
+    color:var(--ink);
+    font-family:'Plus Jakarta Sans',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  .font-display{font-family:'Fraunces',serif;}
+  .font-mono{font-family:'JetBrains Mono',monospace;}
+  ::selection{background:var(--stamp); color:#fff;}
+
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--stamp);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* ---- form fields ---- */
+  .field-input{
+    width:100%;
+    background:#fff;
+    border:1.5px solid var(--card-border);
+    border-radius:0.65rem;
+    padding:0.62rem 0.9rem;
+    font-size:0.925rem;
+    color:var(--ink);
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .field-input::placeholder{ color:#9CA7B4; }
+  .field-input:focus{
+    border-color:var(--ink);
+    box-shadow:0 0 0 3px rgba(34,48,63,0.08);
+    outline:none;
+  }
+  textarea.field-input{ resize:vertical; min-height:4.5rem; }
+  .field-label{
+    display:block;
+    font-size:0.8rem;
+    font-weight:700;
+    color:var(--ink-soft);
+    margin-bottom:0.4rem;
+    letter-spacing:0.01em;
+  }
+  .field-required::after{
+    content:' *';
+    color:var(--stamp);
+  }
+  .field-hint{
+    font-size:0.75rem;
+    color:var(--ink-soft);
+    margin-top:0.35rem;
+  }
+  .item-row{
+    background:var(--shell);
+    border:1px solid var(--card-border);
+    border-radius:0.7rem;
+    padding:0.75rem;
+  }
+  .item-mini-label{
+    font-size:0.65rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    color:var(--ink-soft);
+    margin-bottom:0.15rem;
+    display:block;
+  }
+
+  /* ---- cards ---- */
+  .card{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:1.15rem;
+    padding:1.6rem;
+  }
+  .card-eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.68rem;
+    letter-spacing:0.16em;
+    color:var(--stamp);
+    font-weight:700;
+    text-transform:uppercase;
+  }
+  .card-title{
+    font-family:'Fraunces',serif;
+    font-size:1.4rem;
+    font-weight:600;
+    margin-top:0.2rem;
+    color:var(--ink);
+    line-height:1.2;
+  }
+
+  /* ---- buttons ---- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:0.5rem;
+    font-weight:700;
+    font-size:0.875rem;
+    padding:0.7rem 1.15rem;
+    border-radius:0.75rem;
+    transition:transform .1s, background .15s, box-shadow .15s, border-color .15s;
+    cursor:pointer;
+    border:1.5px solid transparent;
+    white-space:nowrap;
+  }
+  .btn:active{ transform:scale(0.97); }
+  .btn-primary{ background:var(--stamp); color:#fff; box-shadow:0 8px 20px -8px rgba(178,58,46,0.55); }
+  .btn-primary:hover{ background:var(--stamp-dark); }
+  .btn-secondary{ background:#fff; border-color:var(--card-border); color:var(--ink); }
+  .btn-secondary:hover{ border-color:var(--ink); }
+  .btn-ghost{ background:transparent; color:var(--ink-soft); padding:0.45rem 0.65rem; font-weight:600; }
+  .btn-ghost:hover{ color:var(--ink); text-decoration:underline; }
+  .btn:disabled{ opacity:0.5; cursor:not-allowed; transform:none !important; }
+
+  /* ---- segmented control ---- */
+  .segmented{
+    display:inline-flex;
+    background:#fff;
+    border:1.5px solid var(--card-border);
+    border-radius:0.75rem;
+    padding:0.2rem;
+    gap:0.2rem;
+  }
+  .segmented button{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.7rem;
+    font-weight:700;
+    padding:0.45rem 0.75rem;
+    border-radius:0.55rem;
+    color:var(--ink-soft);
+    letter-spacing:0.02em;
+    transition:background .15s, color .15s;
+  }
+  .segmented button.active{ background:var(--ink); color:#fff; }
+  .segmented button:not(.active):hover{ color:var(--ink); }
+
+  /* ---- mobile tabs ---- */
+  .mtab{
+    flex:1;
+    text-align:center;
+    padding:0.6rem 0.5rem;
+    font-weight:700;
+    font-size:0.82rem;
+    border-radius:0.6rem;
+    color:var(--ink-soft);
+  }
+  .mtab.active{ background:var(--ink); color:#fff; }
+  @media (max-width:1023px){ .mobile-hide{ display:none !important; } }
+
+  /* ---- receipt (paper) ---- */
+  .receipt-shell{ position:relative; padding-left:1.3rem; }
+  .receipt-shell::before{
+    content:'';
+    position:absolute; left:0; top:0.5rem; bottom:0.5rem; width:1.3rem;
+    background-image: radial-gradient(circle at 0 8px, transparent 6px, var(--shell) 6.4px);
+    background-size: 100% 16px;
+    background-repeat: repeat-y;
+  }
+  .receipt{
+    background:var(--paper);
+    color:var(--ink);
+    border:1px solid var(--paper-line);
+    box-shadow: 0 18px 40px -22px rgba(34,48,63,0.45);
+    padding:2rem;
+    width:100%;
+    max-width:560px;
+    margin:0 auto;
+    position:relative;
+  }
+  .receipt.size-thermal{ max-width:300px; padding:1.35rem 1.1rem; font-size:0.82rem; }
+  .receipt.size-a5{ max-width:640px; }
+  .receipt-logo{ max-height:2.75rem; max-width:7rem; object-fit:contain; }
+  .dotted-line{
+    border-bottom:1.5px dotted var(--paper-line);
+    min-height:1.5em;
+    padding-bottom:2px;
+    word-break:break-word;
+  }
+  .amount-box{
+    border:2px solid var(--ink);
+    border-radius:0.5rem;
+    padding:0.45rem 0.85rem;
+    background-image: repeating-linear-gradient(45deg, rgba(34,48,63,0.055) 0 2px, transparent 2px 8px);
+    display:inline-flex;
+    flex-direction:column;
+    align-items:flex-end;
+    min-width:8.5rem;
+  }
+  .receipt-divider{ border-top:1.5px dashed var(--paper-line); margin:1.1rem 0; }
+  .item-row-border{ border-bottom:1px dotted var(--paper-line); }
+  .compact-item-row{ margin-bottom:0.65rem; }
+  .compact-item-row:last-child{ margin-bottom:0; }
+  .compact-item-name{ font-weight:600; line-height:1.35; }
+  .compact-item-meta{ margin-top:0.2rem; }
+  #itemsCompactWrap{ display:none; }
+  .receipt.size-thermal #itemsTableWrap{ display:none; }
+  .receipt.size-thermal #itemsCompactWrap{ display:block; }
+  .sig-line{ border-bottom:1.5px solid var(--ink); }
+  .receipt-footer{ display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; }
+  .receipt-footer .footer-left{ min-width:0; }
+  .receipt-footer .footer-right{ text-align:center; flex-shrink:0; }
+  .receipt.size-thermal .receipt-footer{ flex-direction:column; align-items:stretch; gap:1rem; }
+  .receipt.size-thermal .footer-left{ text-align:center; }
+  .receipt.size-thermal .footer-right{ text-align:center; }
+  .receipt.size-thermal #prevSignerName{ min-width:0; width:75%; margin:0 auto; }
+  .paid-tag{
+    display:inline-block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.68rem;
+    font-weight:700;
+    letter-spacing:0.06em;
+    color:var(--ledger-green);
+    background:rgba(47,110,81,0.09);
+    border:1px solid rgba(47,110,81,0.3);
+    border-radius:999px;
+    padding:0.2rem 0.6rem;
+    text-transform:uppercase;
+  }
+
+  /* signature pad */
+  #sigCanvas{ touch-action:none; cursor:crosshair; background:#fff; border-radius:0.6rem; }
+
+  /* toast */
+  #toast{
+    position:fixed; left:50%; bottom:1.5rem; transform:translate(-50%, 20px);
+    background:var(--ink); color:#fff; font-size:0.85rem; font-weight:600;
+    padding:0.65rem 1.1rem; border-radius:0.7rem; opacity:0; pointer-events:none;
+    transition:opacity .2s, transform .2s; z-index:60; box-shadow:0 10px 30px -8px rgba(0,0,0,0.4);
+  }
+  #toast.show{ opacity:1; transform:translate(-50%, 0); }
+
+  /* print */
+  @media print{
+    body *{ visibility:hidden; }
+    #receipt, #receipt *{ visibility:visible; }
+    #receipt{ position:absolute; left:0; top:0; width:100%; box-shadow:none; border:none; margin:0; max-width:none; }
+    .receipt-shell::before{ display:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+  }
+</style>
+</head>
+<body>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<header class="border-b" style="border-color:var(--card-border); background:var(--card);">
+  <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl flex items-center justify-center font-mono font-bold text-white text-sm shrink-0" style="background:var(--stamp);">Rp</div>
+      <div>
+        <h1 class="font-display font-semibold text-lg leading-tight" style="color:var(--ink);">Kwitansi Digital</h1>
+        <p class="text-xs" style="color:var(--ink-soft);">Isi sekali, cetak rapi — tanpa buku kwitansi</p>
+      </div>
+    </div>
+    <button id="btnNewReceipt" type="button" class="btn btn-secondary hidden sm:inline-flex">
+      Kwitansi Baru
+    </button>
+  </div>
+  <div class="lg:hidden max-w-6xl mx-auto px-5 pb-3 flex gap-2">
+    <button type="button" id="tabFormBtn" class="mtab active" onclick="setMobileTab('form')">Isi Data</button>
+    <button type="button" id="tabPreviewBtn" class="mtab" onclick="setMobileTab('preview')">Pratinjau</button>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-5 py-6 grid lg:grid-cols-2 gap-6 items-start">
+
+  <!-- ============ FORM PANEL ============ -->
+  <section id="form-panel" class="space-y-5">
+
+    <!-- Identitas Penjual -->
+    <div class="card">
+      <p class="card-eyebrow">Toko &amp; Kontak</p>
+      <h2 class="card-title mb-4">Identitas Penjual</h2>
+
+      <div class="space-y-4">
+        <div>
+          <label for="businessName" class="field-label field-required">Nama usaha atau toko</label>
+          <input id="businessName" type="text" class="field-input" placeholder="Contoh: Toko Berkah Jaya" autocomplete="organization">
+        </div>
+
+        <div>
+          <label class="field-label">Logo usaha (opsional)</label>
+          <div class="flex items-center gap-3">
+            <div id="logoPlaceholder" class="w-14 h-14 rounded-xl border-2 border-dashed flex items-center justify-center text-[10px] text-center leading-tight px-1" style="border-color:var(--card-border); color:var(--ink-soft);">Belum ada logo</div>
+            <img id="logoPreviewImg" src="" alt="Pratinjau logo" class="w-14 h-14 rounded-xl object-contain border hidden" style="border-color:var(--card-border); background:#fff;">
+            <div class="flex flex-col gap-1.5">
+              <label for="businessLogoInput" class="btn btn-secondary cursor-pointer text-xs !px-3 !py-1.5">Unggah logo</label>
+              <input id="businessLogoInput" type="file" accept="image/png,image/jpeg" class="hidden">
+              <button type="button" id="logoClearBtn" class="btn-ghost text-xs hidden">Hapus logo</button>
+            </div>
+          </div>
+          <p class="field-hint">Format PNG/JPG, maksimal 2MB.</p>
+        </div>
+
+        <div>
+          <label for="businessAddress" class="field-label">Alamat &amp; kontak (opsional)</label>
+          <textarea id="businessAddress" class="field-input" rows="2" placeholder="Alamat toko, no. WhatsApp, email..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Identitas Transaksi -->
+    <div class="card">
+      <p class="card-eyebrow">Nomor &amp; Tanggal</p>
+      <h2 class="card-title mb-4">Detail Transaksi</h2>
+
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="receiptNumber" class="field-label field-required">Nomor kwitansi</label>
+            <input id="receiptNumber" type="text" class="field-input font-mono text-sm">
+          </div>
+          <div>
+            <label for="transactionDate" class="field-label field-required">Tanggal</label>
+            <input id="transactionDate" type="date" class="field-input">
+          </div>
+        </div>
+        <p class="field-hint -mt-2">Nomor terisi otomatis, bisa diubah manual kalau perlu.</p>
+
+        <div>
+          <label for="receivedFrom" class="field-label field-required">Sudah terima dari</label>
+          <input id="receivedFrom" type="text" class="field-input" placeholder="Nama pelanggan atau pembayar" autocomplete="name">
+        </div>
+      </div>
+    </div>
+
+    <!-- Rincian Pembayaran -->
+    <div class="card">
+      <p class="card-eyebrow">Pembayaran</p>
+      <h2 class="card-title mb-4">Rincian Pembayaran</h2>
+
+      <div class="space-y-4">
+        <div>
+          <label for="paymentNote" class="field-label">Keterangan pembayaran (opsional)</label>
+          <input id="paymentNote" type="text" class="field-input" placeholder="Contoh: Pembayaran sewa toko bulan Agustus 2026">
+          <p class="field-hint">Ringkasan umum. Rincian barang diisi di daftar bawah.</p>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="field-label field-required !mb-0">Daftar barang / jasa</label>
+          </div>
+          <div id="itemsContainer" class="space-y-2"></div>
+          <button type="button" id="btnAddItem" class="btn btn-secondary w-full mt-2 text-sm !py-2">+ Tambah Barang</button>
+        </div>
+
+        <div>
+          <label for="discount" class="field-label">Potongan / diskon (opsional, Rp)</label>
+          <input id="discount" type="text" inputmode="numeric" class="field-input" placeholder="0">
+        </div>
+
+        <div class="rounded-xl p-4 space-y-2" style="background:var(--shell);">
+          <div class="flex items-center justify-between text-sm">
+            <span class="font-semibold" style="color:var(--ink-soft);">Subtotal</span>
+            <span id="subtotalDisplay" class="font-mono font-semibold">Rp 0</span>
+          </div>
+          <div id="discountSummaryRow" class="flex items-center justify-between text-sm hidden">
+            <span class="font-semibold" style="color:var(--ink-soft);">Diskon</span>
+            <span id="discountDisplay" class="font-mono font-semibold" style="color:var(--stamp);">- Rp 0</span>
+          </div>
+          <div class="flex items-center justify-between pt-1.5" style="border-top:1px dashed var(--card-border);">
+            <span class="text-sm font-semibold" style="color:var(--ink-soft);">Total dibayar</span>
+            <span id="totalDisplay" class="font-mono font-bold text-lg" style="color:var(--ledger-green);">Rp 0</span>
+          </div>
+          <div>
+            <span class="text-xs font-semibold" style="color:var(--ink-soft);">Terbilang:</span>
+            <span id="terbilangDisplay" class="text-sm italic block leading-snug" style="color:var(--ink);">Nol Rupiah</span>
+          </div>
+        </div>
+
+        <div>
+          <label for="paymentMethod" class="field-label field-required">Metode pembayaran</label>
+          <select id="paymentMethod" class="field-input">
+            <option>Tunai</option>
+            <option>Transfer Bank</option>
+            <option>QRIS</option>
+            <option>E-Wallet</option>
+            <option>Kartu Kredit</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pengesahan -->
+    <div class="card">
+      <p class="card-eyebrow">Pengesahan</p>
+      <h2 class="card-title mb-4">Tanda Tangan &amp; Catatan</h2>
+
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="city" class="field-label field-required">Kota</label>
+            <input id="city" type="text" class="field-input" placeholder="Contoh: Purwakarta">
+          </div>
+          <div>
+            <label for="signerName" class="field-label field-required">Ditandatangani oleh</label>
+            <input id="signerName" type="text" class="field-input" placeholder="Nama kasir / pemilik">
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="field-label !mb-0">Tanda tangan digital (opsional)</label>
+            <div class="flex gap-1 text-xs">
+              <button type="button" id="sigModeDrawBtn" class="btn-ghost !p-0 font-bold" style="color:var(--stamp);">Gambar</button>
+              <span style="color:var(--card-border);">·</span>
+              <label for="sigUploadInput" class="btn-ghost !p-0 font-bold cursor-pointer">Unggah PNG</label>
+              <input id="sigUploadInput" type="file" accept="image/png" class="hidden">
+            </div>
+          </div>
+          <canvas id="sigCanvas" class="w-full h-28 border rounded-lg" style="border-color:var(--card-border);"></canvas>
+          <img id="sigPreviewImg" src="" alt="Pratinjau tanda tangan" class="w-full h-28 object-contain border rounded-lg hidden" style="border-color:var(--card-border); background:#fff;">
+          <div class="flex justify-end mt-1.5">
+            <button type="button" id="sigClearBtn" class="btn-ghost text-xs">Hapus tanda tangan</button>
+          </div>
+        </div>
+
+        <div>
+          <label for="notes" class="field-label">Catatan (opsional)</label>
+          <textarea id="notes" class="field-input" rows="2" placeholder="Contoh: Barang yang sudah dibeli tidak dapat ditukar"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <button id="btnNewReceiptMobile" type="button" class="btn btn-secondary w-full sm:hidden">Kwitansi Baru</button>
+  </section>
+
+  <!-- ============ PREVIEW PANEL ============ -->
+  <aside id="preview-col" class="mobile-hide lg:sticky lg:top-6 space-y-4">
+
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="segmented" id="paperSizeControl">
+        <button type="button" data-size="a4" class="active">A4</button>
+        <button type="button" data-size="a5">A5 Lanskap</button>
+        <button type="button" data-size="thermal">Struk 80mm</button>
+      </div>
+      <span id="validityHint" class="text-xs font-semibold" style="color:var(--stamp);"></span>
+    </div>
+
+    <div class="receipt-shell">
+      <div id="receipt" class="receipt size-a4 font-display">
+        <div class="flex items-start justify-between gap-4 mb-1">
+          <div class="flex items-start gap-3 min-w-0">
+            <img id="prevLogo" src="" alt="Logo usaha" class="receipt-logo hidden">
+            <div class="min-w-0">
+              <p id="prevBusinessName" class="font-display font-semibold text-lg leading-tight break-words">Nama Usaha</p>
+              <p id="prevAddress" class="font-sans text-[11px] leading-snug mt-0.5 hidden whitespace-pre-line" style="color:var(--ink-soft);"></p>
+            </div>
+          </div>
+          <div class="text-right shrink-0">
+            <p class="font-mono text-[10px] tracking-widest uppercase" style="color:var(--ink-soft);">Kwitansi</p>
+            <p id="prevReceiptNo" class="font-mono text-xs font-semibold">KWT/00000000/001</p>
+            <p id="prevDate" class="font-sans text-[11px] mt-0.5" style="color:var(--ink-soft);">—</p>
+          </div>
+        </div>
+
+        <div class="flex justify-end my-3">
+          <div class="amount-box">
+            <span class="font-mono text-[10px] tracking-widest uppercase" style="color:var(--ink-soft);">Jumlah</span>
+            <span id="prevAmount" class="font-mono font-bold text-xl leading-tight" style="color:var(--ink);">Rp 0</span>
+          </div>
+        </div>
+
+        <div class="receipt-divider"></div>
+
+        <div class="font-sans space-y-3 text-sm">
+          <div>
+            <span class="text-[11px] font-semibold uppercase tracking-wide" style="color:var(--ink-soft);">Sudah terima dari</span>
+            <p id="prevReceivedFrom" class="dotted-line font-semibold pt-0.5">&nbsp;</p>
+          </div>
+          <div>
+            <span class="text-[11px] font-semibold uppercase tracking-wide" style="color:var(--ink-soft);">Terbilang</span>
+            <p id="prevTerbilang" class="dotted-line italic pt-0.5">&nbsp;</p>
+          </div>
+          <div id="prevPaymentNoteWrap" class="hidden">
+            <span class="text-[11px] font-semibold uppercase tracking-wide" style="color:var(--ink-soft);">Keterangan</span>
+            <p id="prevPaymentNote" class="dotted-line pt-0.5 whitespace-pre-line">&nbsp;</p>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <table id="itemsTableWrap" class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="text-[10px] uppercase tracking-wide" style="color:var(--ink-soft);">
+                <th class="text-left font-semibold pb-1 pr-2 w-6">No</th>
+                <th class="text-left font-semibold pb-1 pr-2">Deskripsi</th>
+                <th class="text-center font-semibold pb-1 px-2 w-10">Qty</th>
+                <th class="text-right font-semibold pb-1 px-2">Harga</th>
+                <th class="text-right font-semibold pb-1 pl-2">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody id="prevItemsBody"></tbody>
+          </table>
+          <div id="itemsCompactWrap" class="text-sm space-y-1.5"></div>
+
+          <div class="mt-2 pt-2 space-y-1 text-sm" style="border-top:1.5px dashed var(--paper-line);">
+            <div class="flex justify-between">
+              <span style="color:var(--ink-soft);">Subtotal</span>
+              <span id="prevSubtotal" class="font-mono">Rp 0</span>
+            </div>
+            <div id="prevDiscountRow" class="flex justify-between hidden">
+              <span style="color:var(--ink-soft);">Diskon</span>
+              <span id="prevDiscount" class="font-mono">- Rp 0</span>
+            </div>
+            <div class="flex justify-between font-bold text-base pt-0.5">
+              <span>Total</span>
+              <span id="prevGrandTotal" class="font-mono" style="color:var(--ledger-green);">Rp 0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="receipt-divider"></div>
+
+        <div class="receipt-footer">
+          <div class="footer-left">
+            <span id="prevPaymentMethod" class="paid-tag">Tunai</span>
+            <p id="prevNotes" class="font-sans text-[11px] italic mt-2 hidden whitespace-pre-line" style="color:var(--ink-soft);"></p>
+          </div>
+          <div class="footer-right">
+            <p id="prevCityDate" class="font-sans text-[11px] mb-1" style="color:var(--ink-soft);">—, —</p>
+            <img id="prevSignatureImg" src="" alt="Tanda tangan" class="h-12 mx-auto object-contain hidden">
+            <p id="prevSignerName" class="sig-line font-sans text-sm font-semibold px-2 pt-1 min-w-[8rem]">&nbsp;</p>
+            <p class="font-sans text-[10px] mt-0.5" style="color:var(--ink-soft);">Penerima</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap gap-2.5">
+      <button type="button" id="btnDownloadPdf" class="btn btn-primary flex-1 min-w-[9rem]">Unduh PDF</button>
+      <button type="button" id="btnPrint" class="btn btn-secondary">Cetak</button>
+    </div>
+    <p class="text-xs text-center" style="color:var(--ink-soft);">Data tersimpan otomatis di perangkat ini — tidak dikirim ke server mana pun.</p>
+  </aside>
+
+</main>
+
+<footer class="max-w-6xl mx-auto px-5 pb-10 pt-2 text-center text-xs" style="color:var(--ink-soft);">
+  Kwitansi Digital — dibuat untuk mempermudah pencatatan transaksi UMKM.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     STATE
+  ============================================================ */
+  const state = {
+    businessName: "", logo: null, address: "",
+    receiptNumber: "", date: "", receivedFrom: "",
+    paymentNote: "", items: [], subtotal: 0, discount: 0, total: 0, terbilang: "Nol Rupiah",
+    paymentMethod: "Tunai",
+    city: "", signerName: "", signature: null, sigMode: "draw", notes: "",
+    paperSize: "a4"
+  };
+  let nextItemId = 1;
+
+  const $ = (id) => document.getElementById(id);
+  const els = {
+    businessName: $("businessName"), logoPlaceholder: $("logoPlaceholder"), logoPreviewImg: $("logoPreviewImg"),
+    businessLogoInput: $("businessLogoInput"), logoClearBtn: $("logoClearBtn"), businessAddress: $("businessAddress"),
+    receiptNumber: $("receiptNumber"), transactionDate: $("transactionDate"), receivedFrom: $("receivedFrom"),
+    paymentNote: $("paymentNote"), itemsContainer: $("itemsContainer"), btnAddItem: $("btnAddItem"), discount: $("discount"),
+    subtotalDisplay: $("subtotalDisplay"), discountSummaryRow: $("discountSummaryRow"), discountDisplay: $("discountDisplay"),
+    totalDisplay: $("totalDisplay"), terbilangDisplay: $("terbilangDisplay"), paymentMethod: $("paymentMethod"),
+    city: $("city"), signerName: $("signerName"),
+    sigModeDrawBtn: $("sigModeDrawBtn"), sigUploadInput: $("sigUploadInput"), sigCanvas: $("sigCanvas"),
+    sigPreviewImg: $("sigPreviewImg"), sigClearBtn: $("sigClearBtn"), notes: $("notes"),
+    btnNewReceipt: $("btnNewReceipt"), btnNewReceiptMobile: $("btnNewReceiptMobile"),
+    tabFormBtn: $("tabFormBtn"), tabPreviewBtn: $("tabPreviewBtn"),
+    paperSizeControl: $("paperSizeControl"), validityHint: $("validityHint"),
+    receipt: $("receipt"),
+    prevLogo: $("prevLogo"), prevBusinessName: $("prevBusinessName"), prevAddress: $("prevAddress"),
+    prevReceiptNo: $("prevReceiptNo"), prevDate: $("prevDate"), prevAmount: $("prevAmount"),
+    prevReceivedFrom: $("prevReceivedFrom"), prevTerbilang: $("prevTerbilang"),
+    prevPaymentNoteWrap: $("prevPaymentNoteWrap"), prevPaymentNote: $("prevPaymentNote"),
+    prevItemsBody: $("prevItemsBody"), itemsCompactWrap: $("itemsCompactWrap"),
+    prevSubtotal: $("prevSubtotal"), prevDiscountRow: $("prevDiscountRow"), prevDiscount: $("prevDiscount"), prevGrandTotal: $("prevGrandTotal"),
+    prevPaymentMethod: $("prevPaymentMethod"), prevNotes: $("prevNotes"), prevCityDate: $("prevCityDate"),
+    prevSignatureImg: $("prevSignatureImg"), prevSignerName: $("prevSignerName"),
+    btnDownloadPdf: $("btnDownloadPdf"), btnPrint: $("btnPrint"),
+    toast: $("toast")
+  };
+
+  /* ============================================================
+     TERBILANG (angka -> teks bahasa Indonesia)
+  ============================================================ */
+  function angkaKeTerbilang(angka) {
+    angka = Math.floor(Math.abs(angka));
+    const satuan = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
+    if (angka < 12) return satuan[angka];
+    if (angka < 20) return (angkaKeTerbilang(angka - 10) + " Belas").replace(/\s+/g, " ").trim();
+    if (angka < 100) {
+      const puluh = Math.floor(angka / 10), sisa = angka % 10;
+      return (angkaKeTerbilang(puluh) + " Puluh " + angkaKeTerbilang(sisa)).replace(/\s+/g, " ").trim();
+    }
+    if (angka < 200) return ("Seratus " + angkaKeTerbilang(angka - 100)).replace(/\s+/g, " ").trim();
+    if (angka < 1000) return (angkaKeTerbilang(Math.floor(angka / 100)) + " Ratus " + angkaKeTerbilang(angka % 100)).replace(/\s+/g, " ").trim();
+    if (angka < 2000) return ("Seribu " + angkaKeTerbilang(angka - 1000)).replace(/\s+/g, " ").trim();
+    if (angka < 1000000) return (angkaKeTerbilang(Math.floor(angka / 1000)) + " Ribu " + angkaKeTerbilang(angka % 1000)).replace(/\s+/g, " ").trim();
+    if (angka < 1000000000) return (angkaKeTerbilang(Math.floor(angka / 1000000)) + " Juta " + angkaKeTerbilang(angka % 1000000)).replace(/\s+/g, " ").trim();
+    if (angka < 1000000000000) return (angkaKeTerbilang(Math.floor(angka / 1000000000)) + " Miliar " + angkaKeTerbilang(angka % 1000000000)).replace(/\s+/g, " ").trim();
+    return (angkaKeTerbilang(Math.floor(angka / 1000000000000)) + " Triliun " + angkaKeTerbilang(angka % 1000000000000)).replace(/\s+/g, " ").trim();
+  }
+  function terbilangRupiah(total) {
+    const t = Math.max(0, Math.floor(total || 0));
+    if (t === 0) return "Nol Rupiah";
+    return angkaKeTerbilang(t).replace(/\s+/g, " ").trim() + " Rupiah";
+  }
+  function formatRupiah(n) { return "Rp " + Math.round(n || 0).toLocaleString("id-ID"); }
+
+  /* ============================================================
+     HELPERS
+  ============================================================ */
+  function showToast(msg) {
+    els.toast.textContent = msg;
+    els.toast.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => els.toast.classList.remove("show"), 2200);
+  }
+  function todayISO() {
+    const d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  function formatDateID(iso) {
+    if (!iso) return "—";
+    const d = new Date(iso + "T00:00:00");
+    if (isNaN(d.getTime())) return "—";
+    return d.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+  }
+  function debounce(fn, wait) {
+    let t;
+    return function (...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), wait); };
+  }
+
+  /* ============================================================
+     NOMOR KWITANSI OTOMATIS
+  ============================================================ */
+  function generateReceiptNumber(forceNew) {
+    const d = new Date();
+    const dateKey = d.getFullYear() + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0");
+    let counter = null;
+    try { counter = JSON.parse(localStorage.getItem("kwitansiCounter") || "null"); } catch (e) { counter = null; }
+    if (!counter || counter.dateKey !== dateKey) counter = { dateKey, seq: 0 };
+    if (forceNew || counter.seq === 0) {
+      counter.seq += 1;
+      try { localStorage.setItem("kwitansiCounter", JSON.stringify(counter)); } catch (e) {}
+    }
+    return "KWT/" + dateKey + "/" + String(counter.seq).padStart(3, "0");
+  }
+
+  /* ============================================================
+     KALKULASI & PREVIEW
+  ============================================================ */
+  function escapeHtml(str) {
+    return String(str == null ? "" : str)
+      .replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function recalc() {
+    const total = Math.max(0, (Number(state.subtotal) || 0) - (Number(state.discount) || 0));
+    state.total = total;
+    state.terbilang = terbilangRupiah(total);
+    els.totalDisplay.textContent = formatRupiah(total);
+    els.terbilangDisplay.textContent = state.terbilang;
+    if (state.discount > 0) {
+      els.discountDisplay.textContent = "- " + formatRupiah(state.discount);
+      els.discountSummaryRow.classList.remove("hidden");
+    } else {
+      els.discountSummaryRow.classList.add("hidden");
+    }
+    updatePreview();
+  }
+
+  function fillOrPlaceholder(el, value, placeholderHTML) {
+    if (value && String(value).trim() !== "") { el.textContent = value; }
+    else { el.innerHTML = placeholderHTML || "&nbsp;"; }
+  }
+
+  function renderItemsPreview() {
+    const validItems = state.items.filter((it) => it.description && it.description.trim() !== "");
+    if (validItems.length === 0) {
+      els.prevItemsBody.innerHTML = '<tr><td colspan="5" class="py-2 text-center italic" style="color:var(--ink-soft);">Belum ada rincian barang</td></tr>';
+      els.itemsCompactWrap.innerHTML = '<p class="italic" style="color:var(--ink-soft);">Belum ada rincian barang</p>';
+      return;
+    }
+    els.prevItemsBody.innerHTML = validItems.map((it, i) => {
+      const qty = Number(it.qty) || 0, price = Number(it.unitPrice) || 0, sub = qty * price;
+      return '<tr>'
+        + '<td class="py-1 pr-2 align-top item-row-border">' + (i + 1) + '</td>'
+        + '<td class="py-1 pr-2 align-top item-row-border">' + escapeHtml(it.description) + '</td>'
+        + '<td class="py-1 px-2 text-center align-top item-row-border">' + qty + '</td>'
+        + '<td class="py-1 px-2 text-right align-top font-mono item-row-border">' + formatRupiah(price) + '</td>'
+        + '<td class="py-1 pl-2 text-right align-top font-mono item-row-border">' + formatRupiah(sub) + '</td>'
+        + '</tr>';
+    }).join("");
+    els.itemsCompactWrap.innerHTML = validItems.map((it, i) => {
+      const qty = Number(it.qty) || 0, price = Number(it.unitPrice) || 0, sub = qty * price;
+      return '<div class="compact-item-row">'
+        + '<div class="compact-item-name">' + (i + 1) + '. ' + escapeHtml(it.description) + '</div>'
+        + '<div class="compact-item-meta flex justify-between font-mono text-xs" style="color:var(--ink-soft);">'
+        + '<span>' + qty + ' x ' + formatRupiah(price) + '</span><span>' + formatRupiah(sub) + '</span></div>'
+        + '</div>';
+    }).join("");
+  }
+
+  function updatePreview() {
+    els.prevBusinessName.textContent = state.businessName || "Nama Usaha";
+    if (state.logo) { els.prevLogo.src = state.logo; els.prevLogo.classList.remove("hidden"); }
+    else { els.prevLogo.classList.add("hidden"); }
+
+    if (state.address && state.address.trim()) {
+      els.prevAddress.textContent = state.address;
+      els.prevAddress.classList.remove("hidden");
+    } else { els.prevAddress.classList.add("hidden"); }
+
+    els.prevReceiptNo.textContent = state.receiptNumber || "—";
+    els.prevDate.textContent = formatDateID(state.date);
+
+    els.prevAmount.textContent = formatRupiah(state.total);
+    fillOrPlaceholder(els.prevReceivedFrom, state.receivedFrom);
+    fillOrPlaceholder(els.prevTerbilang, state.terbilang);
+
+    if (state.paymentNote && state.paymentNote.trim()) {
+      els.prevPaymentNote.textContent = state.paymentNote;
+      els.prevPaymentNoteWrap.classList.remove("hidden");
+    } else { els.prevPaymentNoteWrap.classList.add("hidden"); }
+
+    renderItemsPreview();
+    els.prevSubtotal.textContent = formatRupiah(state.subtotal);
+    if (state.discount > 0) {
+      els.prevDiscount.textContent = "- " + formatRupiah(state.discount);
+      els.prevDiscountRow.classList.remove("hidden");
+    } else { els.prevDiscountRow.classList.add("hidden"); }
+    els.prevGrandTotal.textContent = formatRupiah(state.total);
+
+    els.prevPaymentMethod.textContent = state.paymentMethod || "Tunai";
+
+    if (state.notes && state.notes.trim()) {
+      els.prevNotes.textContent = "Catatan: " + state.notes;
+      els.prevNotes.classList.remove("hidden");
+    } else { els.prevNotes.classList.add("hidden"); }
+
+    els.prevCityDate.textContent = (state.city || "—") + ", " + formatDateID(state.date);
+    fillOrPlaceholder(els.prevSignerName, state.signerName);
+
+    if (state.signature) { els.prevSignatureImg.src = state.signature; els.prevSignatureImg.classList.remove("hidden"); }
+    else { els.prevSignatureImg.classList.add("hidden"); }
+
+    updateValidityHint();
+  }
+
+  function updateValidityHint() {
+    const hasValidItems = state.items.some((it) => it.description && it.description.trim() !== "" && (Number(it.unitPrice) || 0) > 0);
+    const required = [state.businessName, state.receiptNumber, state.date, state.receivedFrom, hasValidItems ? "x" : "", state.city, state.signerName];
+    const missing = required.filter((v) => !v || String(v).trim() === "").length;
+    if (missing > 0) {
+      els.validityHint.textContent = missing + " kolom wajib belum diisi";
+      els.validityHint.style.color = "var(--stamp)";
+    } else {
+      els.validityHint.textContent = "Siap diunduh";
+      els.validityHint.style.color = "var(--ledger-green)";
+    }
+  }
+
+  /* ============================================================
+     DAFTAR BARANG / JASA (multi-item)
+  ============================================================ */
+  function recalcItems() {
+    state.subtotal = state.items.reduce((sum, it) => sum + (Number(it.qty) || 0) * (Number(it.unitPrice) || 0), 0);
+    state.items.forEach((it) => {
+      const rowEl = els.itemsContainer.querySelector('.item-row[data-id="' + it.id + '"]');
+      if (rowEl) {
+        const sub = (Number(it.qty) || 0) * (Number(it.unitPrice) || 0);
+        rowEl.querySelector(".item-subtotal").textContent = formatRupiah(sub);
+      }
+    });
+    els.subtotalDisplay.textContent = formatRupiah(state.subtotal);
+    recalc();
+  }
+
+  function createItemRow(item) {
+    const row = document.createElement("div");
+    row.className = "item-row";
+    row.dataset.id = item.id;
+    row.innerHTML =
+      '<div class="flex items-start gap-2">'
+      + '<input type="text" class="field-input item-desc" placeholder="Nama barang / jasa" value="' + escapeHtml(item.description) + '">'
+      + '<button type="button" class="item-remove btn-ghost !p-1.5 shrink-0" aria-label="Hapus barang" title="Hapus barang">✕</button>'
+      + '</div>'
+      + '<div class="grid grid-cols-3 gap-2 mt-2 items-end">'
+      + '<div><label class="item-mini-label">Jumlah</label>'
+      + '<input type="number" min="1" step="1" class="field-input item-qty !py-1.5 text-sm" value="' + item.qty + '"></div>'
+      + '<div><label class="item-mini-label">Harga satuan</label>'
+      + '<input type="text" inputmode="numeric" class="field-input item-price !py-1.5 text-sm" placeholder="0" value="' + (item.unitPrice ? Number(item.unitPrice).toLocaleString("id-ID") : "") + '"></div>'
+      + '<div class="text-right"><label class="item-mini-label block">Subtotal</label>'
+      + '<span class="item-subtotal font-mono font-semibold text-sm">Rp 0</span></div>'
+      + '</div>';
+
+    const descEl = row.querySelector(".item-desc");
+    const qtyEl = row.querySelector(".item-qty");
+    const priceEl = row.querySelector(".item-price");
+    const removeBtn = row.querySelector(".item-remove");
+
+    descEl.addEventListener("input", () => { item.description = descEl.value; updatePreview(); });
+    qtyEl.addEventListener("input", () => {
+      const v = parseInt(qtyEl.value, 10);
+      item.qty = isNaN(v) ? 0 : v;
+      recalcItems();
+    });
+    qtyEl.addEventListener("blur", () => {
+      if (!item.qty || item.qty < 1) { item.qty = 1; qtyEl.value = 1; recalcItems(); }
+    });
+    priceEl.addEventListener("input", () => {
+      const digits = priceEl.value.replace(/[^\d]/g, "");
+      const num = digits ? parseInt(digits, 10) : 0;
+      item.unitPrice = num;
+      priceEl.value = digits ? num.toLocaleString("id-ID") : "";
+      recalcItems();
+    });
+    removeBtn.addEventListener("click", () => removeItem(item.id));
+
+    return row;
+  }
+
+  function addItem(prefill) {
+    const item = Object.assign({ id: "item-" + (nextItemId++), description: "", qty: 1, unitPrice: 0 }, prefill || {});
+    state.items.push(item);
+    els.itemsContainer.appendChild(createItemRow(item));
+    recalcItems();
+    return item;
+  }
+
+  function removeItem(id) {
+    const idx = state.items.findIndex((it) => it.id === id);
+    if (idx === -1) return;
+    state.items.splice(idx, 1);
+    const rowEl = els.itemsContainer.querySelector('.item-row[data-id="' + id + '"]');
+    if (rowEl) rowEl.remove();
+    if (state.items.length === 0) { addItem(); return; }
+    recalcItems();
+  }
+
+  els.btnAddItem.addEventListener("click", () => addItem());
+
+  /* ============================================================
+     PROFIL TOKO (localStorage)
+  ============================================================ */
+  function saveProfile() {
+    const profile = {
+      businessName: state.businessName, logo: state.logo, address: state.address,
+      city: state.city, signerName: state.signerName, signature: state.signature, sigMode: state.sigMode
+    };
+    try { localStorage.setItem("kwitansiProfile", JSON.stringify(profile)); } catch (e) {}
+  }
+  const saveProfileDebounced = debounce(saveProfile, 500);
+
+  function loadProfile() {
+    let raw = null;
+    try { raw = localStorage.getItem("kwitansiProfile"); } catch (e) {}
+    if (!raw) return;
+    let profile;
+    try { profile = JSON.parse(raw); } catch (e) { return; }
+    if (profile.businessName) { state.businessName = profile.businessName; els.businessName.value = profile.businessName; }
+    if (profile.address) { state.address = profile.address; els.businessAddress.value = profile.address; }
+    if (profile.city) { state.city = profile.city; els.city.value = profile.city; }
+    if (profile.signerName) { state.signerName = profile.signerName; els.signerName.value = profile.signerName; }
+    if (profile.logo) { state.logo = profile.logo; renderLogoPreview(); }
+    if (profile.signature) {
+      state.signature = profile.signature;
+      state.sigMode = profile.sigMode || "draw";
+      renderSignatureMode();
+    }
+  }
+
+  /* ============================================================
+     LOGO
+  ============================================================ */
+  function renderLogoPreview() {
+    if (state.logo) {
+      els.logoPreviewImg.src = state.logo;
+      els.logoPreviewImg.classList.remove("hidden");
+      els.logoPlaceholder.classList.add("hidden");
+      els.logoClearBtn.classList.remove("hidden");
+    } else {
+      els.logoPreviewImg.classList.add("hidden");
+      els.logoPlaceholder.classList.remove("hidden");
+      els.logoClearBtn.classList.add("hidden");
+    }
+  }
+  els.businessLogoInput.addEventListener("change", (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { showToast("Ukuran logo maksimal 2MB"); els.businessLogoInput.value = ""; return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      state.logo = reader.result;
+      renderLogoPreview(); updatePreview(); saveProfile();
+    };
+    reader.readAsDataURL(file);
+  });
+  els.logoClearBtn.addEventListener("click", () => {
+    state.logo = null; els.businessLogoInput.value = "";
+    renderLogoPreview(); updatePreview(); saveProfile();
+  });
+
+  /* ============================================================
+     TANDA TANGAN (canvas + upload)
+  ============================================================ */
+  const canvas = els.sigCanvas;
+  const ctx = canvas.getContext("2d");
+  function resizeCanvas() {
+    const ratio = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = Math.max(1, rect.width * ratio);
+    canvas.height = Math.max(1, rect.height * ratio);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(ratio, ratio);
+    ctx.lineWidth = 2.2; ctx.lineCap = "round"; ctx.lineJoin = "round";
+    ctx.strokeStyle = "#22303F";
+    if (state.sigMode === "draw" && state.signature) drawImageToCanvas(state.signature);
+  }
+  function drawImageToCanvas(dataUrl) {
+    const img = new Image();
+    img.onload = () => {
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      const scale = Math.min(rect.width / img.width, rect.height / img.height);
+      const w = img.width * scale, h = img.height * scale;
+      ctx.drawImage(img, (rect.width - w) / 2, (rect.height - h) / 2, w, h);
+    };
+    img.src = dataUrl;
+  }
+  window.addEventListener("resize", debounce(resizeCanvas, 200));
+
+  function renderSignatureMode() {
+    if (state.sigMode === "upload" && state.signature) {
+      canvas.classList.add("hidden");
+      els.sigPreviewImg.src = state.signature;
+      els.sigPreviewImg.classList.remove("hidden");
+    } else {
+      els.sigPreviewImg.classList.add("hidden");
+      canvas.classList.remove("hidden");
+      if (state.signature) requestAnimationFrame(() => drawImageToCanvas(state.signature));
+    }
+  }
+
+  let drawing = false, lastX = 0, lastY = 0, hasStroke = false;
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const t = e.touches && e.touches[0];
+    return { x: (t ? t.clientX : e.clientX) - rect.left, y: (t ? t.clientY : e.clientY) - rect.top };
+  }
+  function start(e) { drawing = true; hasStroke = true; const p = getPos(e); lastX = p.x; lastY = p.y; e.preventDefault(); }
+  function move(e) {
+    if (!drawing) return;
+    const p = getPos(e);
+    ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y); ctx.stroke();
+    lastX = p.x; lastY = p.y; e.preventDefault();
+  }
+  function end() {
+    if (!drawing) return;
+    drawing = false;
+    if (hasStroke) {
+      state.signature = canvas.toDataURL("image/png");
+      state.sigMode = "draw";
+      updatePreview(); saveProfile();
+    }
+  }
+  canvas.addEventListener("mousedown", start);
+  canvas.addEventListener("mousemove", move);
+  window.addEventListener("mouseup", end);
+  canvas.addEventListener("touchstart", start, { passive: false });
+  canvas.addEventListener("touchmove", move, { passive: false });
+  canvas.addEventListener("touchend", end);
+
+  els.sigClearBtn.addEventListener("click", () => {
+    const rect = canvas.getBoundingClientRect();
+    ctx.clearRect(0, 0, rect.width, rect.height);
+    hasStroke = false;
+    state.signature = null; state.sigMode = "draw";
+    els.sigUploadInput.value = "";
+    renderSignatureMode(); updatePreview(); saveProfile();
+  });
+  els.sigModeDrawBtn.addEventListener("click", () => {
+    const rect = canvas.getBoundingClientRect();
+    ctx.clearRect(0, 0, rect.width, rect.height);
+    hasStroke = false;
+    state.signature = null; state.sigMode = "draw";
+    els.sigUploadInput.value = "";
+    renderSignatureMode(); updatePreview(); saveProfile();
+  });
+  els.sigUploadInput.addEventListener("change", (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { showToast("Ukuran gambar maksimal 2MB"); els.sigUploadInput.value = ""; return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      state.signature = reader.result; state.sigMode = "upload";
+      renderSignatureMode(); updatePreview(); saveProfile();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  /* ============================================================
+     FIELD BINDINGS
+  ============================================================ */
+  function attachCurrencyInput(el, key) {
+    el.addEventListener("input", () => {
+      const digits = el.value.replace(/[^\d]/g, "");
+      const num = digits ? parseInt(digits, 10) : 0;
+      state[key] = num;
+      el.value = digits ? num.toLocaleString("id-ID") : "";
+      recalc(); saveProfileDebounced();
+    });
+  }
+  attachCurrencyInput(els.discount, "discount");
+
+  els.businessName.addEventListener("input", () => { state.businessName = els.businessName.value; updatePreview(); saveProfileDebounced(); });
+  els.businessAddress.addEventListener("input", () => { state.address = els.businessAddress.value; updatePreview(); saveProfileDebounced(); });
+  els.receiptNumber.addEventListener("input", () => { state.receiptNumber = els.receiptNumber.value; updatePreview(); });
+  els.transactionDate.addEventListener("input", () => { state.date = els.transactionDate.value; updatePreview(); });
+  els.receivedFrom.addEventListener("input", () => { state.receivedFrom = els.receivedFrom.value; updatePreview(); });
+  els.paymentNote.addEventListener("input", () => { state.paymentNote = els.paymentNote.value; updatePreview(); });
+  els.paymentMethod.addEventListener("change", () => { state.paymentMethod = els.paymentMethod.value; updatePreview(); });
+  els.city.addEventListener("input", () => { state.city = els.city.value; updatePreview(); saveProfileDebounced(); });
+  els.signerName.addEventListener("input", () => { state.signerName = els.signerName.value; updatePreview(); saveProfileDebounced(); });
+  els.notes.addEventListener("input", () => { state.notes = els.notes.value; updatePreview(); });
+
+  /* ============================================================
+     UKURAN KERTAS
+  ============================================================ */
+  function setPaperSize(size) {
+    state.paperSize = size;
+    els.receipt.classList.remove("size-a4", "size-a5", "size-thermal");
+    els.receipt.classList.add("size-" + size);
+    [...els.paperSizeControl.querySelectorAll("button")].forEach((b) => b.classList.toggle("active", b.dataset.size === size));
+    updatePageSizeStyle();
+  }
+  els.paperSizeControl.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-size]");
+    if (btn) setPaperSize(btn.dataset.size);
+  });
+  function updatePageSizeStyle() {
+    const styleEl = document.getElementById("dynamic-page-size");
+    if (state.paperSize === "a4") styleEl.textContent = "@page { size: A4; margin: 12mm; }";
+    else if (state.paperSize === "a5") styleEl.textContent = "@page { size: A5 landscape; margin: 8mm; }";
+    else styleEl.textContent = "@page { size: 80mm auto; margin: 4mm; }";
+  }
+
+  /* ============================================================
+     TAB MOBILE
+  ============================================================ */
+  window.setMobileTab = function (tab) {
+    $("form-panel").classList.toggle("mobile-hide", tab !== "form");
+    $("preview-col").classList.toggle("mobile-hide", tab !== "preview");
+    els.tabFormBtn.classList.toggle("active", tab === "form");
+    els.tabPreviewBtn.classList.toggle("active", tab === "preview");
+    if (tab === "preview") window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  /* ============================================================
+     KWITANSI BARU
+  ============================================================ */
+  function newReceipt() {
+    state.receivedFrom = ""; els.receivedFrom.value = "";
+    state.paymentNote = ""; els.paymentNote.value = "";
+    els.itemsContainer.innerHTML = "";
+    state.items = [];
+    nextItemId = 1;
+    addItem();
+    state.discount = 0; els.discount.value = "";
+    state.notes = ""; els.notes.value = "";
+    state.date = todayISO(); els.transactionDate.value = state.date;
+    state.receiptNumber = generateReceiptNumber(true); els.receiptNumber.value = state.receiptNumber;
+    recalc();
+    showToast("Kwitansi baru siap diisi");
+    if (window.innerWidth < 1024) { setMobileTab("form"); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  }
+  els.btnNewReceipt.addEventListener("click", newReceipt);
+  els.btnNewReceiptMobile.addEventListener("click", newReceipt);
+
+  /* ============================================================
+     EXPORT PDF & CETAK
+  ============================================================ */
+  els.btnDownloadPdf.addEventListener("click", async () => {
+    if (typeof html2pdf === "undefined") { showToast("Gagal memuat modul PDF. Periksa koneksi internet."); return; }
+    els.btnDownloadPdf.disabled = true;
+    const originalText = els.btnDownloadPdf.textContent;
+    els.btnDownloadPdf.textContent = "Menyiapkan PDF...";
+    const el = els.receipt;
+    const filename = (state.receiptNumber || "kwitansi").replace(/\//g, "-") + ".pdf";
+    let jsPDFOpt;
+    if (state.paperSize === "a4") jsPDFOpt = { unit: "mm", format: "a4", orientation: "portrait" };
+    else if (state.paperSize === "a5") jsPDFOpt = { unit: "mm", format: "a5", orientation: "landscape" };
+    else {
+      const widthMM = 80;
+      const ratio = el.offsetHeight / el.offsetWidth;
+      const heightMM = Math.max(90, widthMM * ratio + 10);
+      jsPDFOpt = { unit: "mm", format: [widthMM, heightMM], orientation: "portrait" };
+    }
+    const opt = {
+      margin: state.paperSize === "thermal" ? 2 : 8,
+      filename,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2.5, backgroundColor: "#FBF7EC", useCORS: true },
+      jsPDF: jsPDFOpt
+    };
+    try {
+      await html2pdf().set(opt).from(el).save();
+      showToast("PDF berhasil diunduh");
+    } catch (err) {
+      showToast("Gagal membuat PDF, coba lagi");
+    } finally {
+      els.btnDownloadPdf.disabled = false;
+      els.btnDownloadPdf.textContent = originalText;
+    }
+  });
+
+  els.btnPrint.addEventListener("click", () => { updatePageSizeStyle(); window.print(); });
+
+  /* ============================================================
+     INIT
+  ============================================================ */
+  function init() {
+    els.transactionDate.value = todayISO(); state.date = todayISO();
+    els.receiptNumber.value = generateReceiptNumber(false); state.receiptNumber = els.receiptNumber.value;
+    resizeCanvas();
+    loadProfile();
+    addItem();
+    setPaperSize("a4");
+    recalc();
+  }
+  init();
+})();
+</script>
+
+
+
+</body>
+</html>
