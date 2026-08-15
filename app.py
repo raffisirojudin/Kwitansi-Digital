@@ -51,7 +51,6 @@ default_data = pd.DataFrame([
     {"Nama Barang": "Laptop Asus Zenbook", "Qty": 1, "Harga Satuan": 100000},
     {"Nama Barang": "Mouse Wireless Logitech", "Qty": 2, "Harga Satuan": 100000},
 ])
-default_data["Subtotal"] = default_data["Qty"] * default_data["Harga Satuan"]
 
 # --- TABEL INPUT INTERAKTIF ---
 edited_df = st.data_editor(
@@ -66,13 +65,15 @@ edited_df = st.data_editor(
     }
 )
 
-# Rekalkulasi Otomatis
+# --- REKALKULASI OTOMATIS (AMANI TIPE DATA) ---
+edited_df["Qty"] = pd.to_numeric(edited_df["Qty"], errors='coerce').fillna(0).astype(int)
+edited_df["Harga Satuan"] = pd.to_numeric(edited_df["Harga Satuan"], errors='coerce').fillna(0).astype(float)
 edited_df["Subtotal"] = edited_df["Qty"] * edited_df["Harga Satuan"]
-total_nominal = edited_df["Subtotal"].sum()
+total_nominal = float(edited_df["Subtotal"].sum())
 
 st.metric("Total Pembayaran Otomatis", f"Rp {total_nominal:,.0f}".replace(",", "."))
 
-# --- HELPER FUNCTIONS ---
+# --- HELPER FUNCTIONS FOR EXPORT ---
 
 def generate_excel(df_items, total_val):
     output = io.BytesIO()
@@ -132,6 +133,7 @@ def generate_pdf(df_items, total_val, logo_file):
 
     elements = []
 
+    # Header dengan Logo (Opsional)
     company_cell = [
         Paragraph(f"<b>{nama_perusahaan.upper()}</b>", style_comp_title),
         Paragraph("BUKTI PEMBAYARAN RESMI DIGITAL", style_comp_sub)
@@ -142,7 +144,11 @@ def generate_pdf(df_items, total_val, logo_file):
         rl_img = RLImage(img_data, width=40, height=40)
         rl_img.hAlign = 'LEFT'
         header_left = Table([[rl_img, company_cell]], colWidths=[45, 240])
-        header_left.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'MIDDLE')]))
+        header_left.setStyle(TableStyle([
+            ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+            ('LEFTPADDING', (0,0), (-1,-1), 0),
+            ('RIGHTPADDING', (0,0), (-1,-1), 0)
+        ]))
     else:
         header_left = company_cell
 
@@ -160,11 +166,13 @@ def generate_pdf(df_items, total_val, logo_file):
     elements.append(t_header)
     elements.append(Spacer(1, 4))
 
+    # Pembatas
     t_divider = Table([['']], colWidths=[535], rowHeights=[2])
     t_divider.setStyle(TableStyle([('BACKGROUND', (0,0), (-1,-1), col_primary)]))
     elements.append(t_divider)
     elements.append(Spacer(1, 4))
 
+    # Metadata
     meta_data = [
         [Paragraph("Telah Terima Dari", style_label), Paragraph(":", style_label), Paragraph(f"{terima_dari}", style_value_bold)],
         [Paragraph("Uang Sejumlah", style_label), Paragraph(":", style_label), Paragraph(f"<i>\" {terbilang} \"</i>", style_terbilang)]
@@ -178,18 +186,26 @@ def generate_pdf(df_items, total_val, logo_file):
     elements.append(t_meta)
     elements.append(Spacer(1, 6))
 
+    # Tabel Rincian Barang (Safe Formatting)
     table_items_data = [[
         Paragraph("No", style_tbl_header), Paragraph("Nama Barang / Deskripsi", style_tbl_header),
         Paragraph("Qty", style_tbl_header), Paragraph("Harga Satuan", style_tbl_header), Paragraph("Subtotal", style_tbl_header)
     ]]
 
     for idx, row in df_items.iterrows():
+        qty_val = int(row['Qty'])
+        harga_val = float(row['Harga Satuan'])
+        subtotal_val = float(row['Subtotal'])
+
+        harga_fmt = f"Rp {harga_val:,.0f}".replace(",", ".")
+        subtotal_fmt = f"Rp {subtotal_val:,.0f}".replace(",", ".")
+
         table_items_data.append([
             Paragraph(str(idx + 1), style_tbl_cell),
             Paragraph(str(row['Nama Barang']), style_tbl_cell),
-            Paragraph(str(row['Qty']), style_tbl_cell_right),
-            Paragraph(f"Rp {row['Harga Satuan']:,.0f}".replace(",", "."), style_tbl_cell_right),
-            Paragraph(f"Rp {row['Subtotal']:,.0f}".replace(",", "."), style_tbl_cell_right)
+            Paragraph(str(qty_val), style_tbl_cell_right),
+            Paragraph(harga_fmt, style_tbl_cell_right),
+            Paragraph(subtotal_fmt, style_tbl_cell_right)
         ])
 
     table_items_data.append([
@@ -211,6 +227,7 @@ def generate_pdf(df_items, total_val, logo_file):
     elements.append(t_items)
     elements.append(Spacer(1, 6))
 
+    # Tanda Tangan
     footer_right = [
         [Paragraph(f"{kota}, {tanggal.strftime('%d %B %Y')}", style_date)],
         [Spacer(1, 2)],
@@ -229,7 +246,6 @@ def generate_pdf(df_items, total_val, logo_file):
     buffer.seek(0)
     return buffer
 
-# Konversi PDF ke PNG Buffer
 def generate_png_from_pdf(pdf_buffer):
     images = convert_from_bytes(pdf_buffer.getvalue())
     img_byte_arr = io.BytesIO()
@@ -241,7 +257,6 @@ def generate_png_from_pdf(pdf_buffer):
 # --- PANEL EXPORT MULTI-FORMAT ---
 st.subheader("📥 Export & Download Kwitansi")
 
-# Generate PDF Buffer Utama
 pdf_buf = generate_pdf(edited_df, total_nominal, uploaded_logo)
 
 col_exp1, col_exp2, col_exp3 = st.columns(3)
@@ -268,7 +283,7 @@ with col_exp2:
             use_container_width=True
         )
     except Exception as e:
-        st.error("Fitur PNG butuh poppler-utils. Unduh via PDF dulu.")
+        st.warning("Gunakan PDF atau pasang poppler-utils untuk konversi PNG.")
 
 with col_exp3:
     st.markdown("##### 📊 Format Excel (Rekap)")
@@ -281,16 +296,19 @@ with col_exp3:
         use_container_width=True
     )
 
-# --- PREVIEW KWITANSI ---
+# --- PREVIEW KWITANSI DIGITAL ---
 st.divider()
 st.subheader("👁️ Live Preview Kwitansi Digital")
 
 items_html = ""
 for idx, row in edited_df.iterrows():
-    subtotal_val = row['Qty'] * row['Harga Satuan']
-    h_fmt = f"Rp {row['Harga Satuan']:,.0f}".replace(",", ".")
-    s_fmt = f"Rp {subtotal_val:,.0f}".replace(",", ".")
-    items_html += f"<tr><td style='padding:6px;border-bottom:1px solid #E2E8F0;'>{idx+1}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;'>{row['Nama Barang']}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;text-align:right;'>{row['Qty']}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;text-align:right;'>{h_fmt}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;text-align:right;'>{s_fmt}</td></tr>"
+    qty_v = int(row['Qty'])
+    h_v = float(row['Harga Satuan'])
+    s_v = float(row['Subtotal'])
+    
+    h_fmt = f"Rp {h_v:,.0f}".replace(",", ".")
+    s_fmt = f"Rp {s_v:,.0f}".replace(",", ".")
+    items_html += f"<tr><td style='padding:6px;border-bottom:1px solid #E2E8F0;'>{idx+1}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;'>{row['Nama Barang']}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;text-align:right;'>{qty_v}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;text-align:right;'>{h_fmt}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;text-align:right;'>{s_fmt}</td></tr>"
 
 tot_fmt = f"Rp {total_nominal:,.0f}".replace(",", ".")
 
