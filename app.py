@@ -58,14 +58,16 @@ st.metric("Total Pembayaran Otomatis", f"Rp {total_nominal:,.0f}".replace(",", "
 btn_generate = st.button("🔨 Generate PDF Kwitansi Multi-Item", type="primary", use_container_width=True)
 
 
-# --- FUNCTION GENERATE PDF (REPORTLAB) ---
+# --- FUNCTION GENERATE PDF (SUDAH DIPERBAIKI) ---
 def generate_pdf(df_items, total_val):
     buffer = io.BytesIO()
     
+    # Lebar kertas A5 landscape = 595.27 pt. 
+    # Margin kiri 25 + kanan 25 = 50 pt -> Lebar area cetak bersih = 545 pt.
     doc = SimpleDocTemplate(
         buffer,
         pagesize=landscape(A5),
-        rightMargin=25, leftMargin=25, topMargin=20, bottomMargin=20
+        rightMargin=25, leftMargin=25, topMargin=15, bottomMargin=15
     )
     
     COLOR_PRIMARY = colors.HexColor('#1E3A8A')
@@ -77,69 +79,71 @@ def generate_pdf(df_items, total_val):
 
     styles = getSampleStyleSheet()
     
-    style_comp_title = ParagraphStyle('CompTitle', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=13, textColor=COLOR_PRIMARY)
-    style_comp_sub = ParagraphStyle('CompSub', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7, textColor=COLOR_MUTED)
-    style_doc_title = ParagraphStyle('DocTitle', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=14, alignment=2, textColor=COLOR_TEXT)
-    style_doc_no = ParagraphStyle('DocNo', parent=styles['Normal'], fontName='Courier-Bold', fontSize=8.5, alignment=2, textColor=COLOR_SECONDARY)
+    # Leading ditambahkan agar tidak bentrok dengan kalkulasi tinggi baris
+    style_comp_title = ParagraphStyle('CompTitle', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=12, leading=14, textColor=COLOR_PRIMARY)
+    style_comp_sub = ParagraphStyle('CompSub', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7, leading=9, textColor=COLOR_MUTED)
+    style_doc_title = ParagraphStyle('DocTitle', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=13, leading=15, alignment=2, textColor=COLOR_TEXT)
+    style_doc_no = ParagraphStyle('DocNo', parent=styles['Normal'], fontName='Courier-Bold', fontSize=8.5, leading=10, alignment=2, textColor=COLOR_SECONDARY)
     
-    style_label = ParagraphStyle('Label', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, textColor=COLOR_MUTED)
-    style_value_bold = ParagraphStyle('ValueBold', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=9.5, textColor=COLOR_TEXT)
-    style_terbilang = ParagraphStyle('Terbilang', parent=styles['Normal'], fontName='Helvetica-Oblique', fontSize=8.5, textColor=COLOR_PRIMARY)
+    style_label = ParagraphStyle('Label', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, leading=10, textColor=COLOR_MUTED)
+    style_value_bold = ParagraphStyle('ValueBold', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=9, leading=11, textColor=COLOR_TEXT)
+    style_terbilang = ParagraphStyle('Terbilang', parent=styles['Normal'], fontName='Helvetica-Oblique', fontSize=8, leading=10, textColor=COLOR_PRIMARY)
     
-    style_tbl_header = ParagraphStyle('TblHdr', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, textColor=colors.white)
-    style_tbl_cell = ParagraphStyle('TblCell', parent=styles['Normal'], fontName='Helvetica', fontSize=8, textColor=COLOR_TEXT)
-    style_tbl_cell_right = ParagraphStyle('TblCellR', parent=styles['Normal'], fontName='Helvetica', fontSize=8, alignment=2, textColor=COLOR_TEXT)
-    style_tbl_cell_bold_r = ParagraphStyle('TblCellBR', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, alignment=2, textColor=COLOR_PRIMARY)
+    style_tbl_header = ParagraphStyle('TblHdr', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, leading=10, textColor=colors.white)
+    style_tbl_cell = ParagraphStyle('TblCell', parent=styles['Normal'], fontName='Helvetica', fontSize=8, leading=10, textColor=COLOR_TEXT)
+    style_tbl_cell_right = ParagraphStyle('TblCellR', parent=styles['Normal'], fontName='Helvetica', fontSize=8, leading=10, alignment=2, textColor=COLOR_TEXT)
+    style_tbl_cell_bold_r = ParagraphStyle('TblCellBR', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, leading=11, alignment=2, textColor=COLOR_PRIMARY)
 
-    style_date = ParagraphStyle('DateText', parent=styles['Normal'], fontName='Helvetica', fontSize=8, textColor=COLOR_MUTED)
-    style_sign_lbl = ParagraphStyle('SignLbl', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, alignment=1, textColor=COLOR_MUTED)
-    style_sign_name = ParagraphStyle('SignName', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=9, alignment=1, textColor=COLOR_TEXT)
+    style_date = ParagraphStyle('DateText', parent=styles['Normal'], fontName='Helvetica', fontSize=8, leading=10, textColor=COLOR_MUTED)
+    style_sign_lbl = ParagraphStyle('SignLbl', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, leading=10, alignment=1, textColor=COLOR_MUTED)
+    style_sign_name = ParagraphStyle('SignName', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, leading=11, alignment=1, textColor=COLOR_TEXT)
 
     elements = []
 
+    # Total Lebar = 535 pt (Fit 545 pt)
     # 1. HEADER
     header_data = [
-        [
-            Paragraph(f"<b>{nama_perusahaan.upper()}</b>", style_comp_title),
-            Paragraph("<b>KWITANSI PEMBAYARAN</b>", style_doc_title)
-        ],
-        [
-            Paragraph("BUKTI PEMBAYARAN RESMI DIGITAL", style_comp_sub),
-            Paragraph(f"NO: {no_kwitansi}", style_doc_no)
-        ]
+        [Paragraph(f"<b>{nama_perusahaan.upper()}</b>", style_comp_title), Paragraph("<b>KWITANSI PEMBAYARAN</b>", style_doc_title)],
+        [Paragraph("BUKTI PEMBAYARAN RESMI DIGITAL", style_comp_sub), Paragraph(f"NO: {no_kwitansi}", style_doc_no)]
     ]
-    t_header = Table(header_data, colWidths=[270, 240])
-    t_header.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'MIDDLE')]))
+    t_header = Table(header_data, colWidths=[285, 250])
+    t_header.setStyle(TableStyle([
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('LEFTPADDING', (0,0), (-1,-1), 2),
+        ('RIGHTPADDING', (0,0), (-1,-1), 2),
+        ('TOPPADDING', (0,0), (-1,-1), 1),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1),
+    ]))
     elements.append(t_header)
-    elements.append(Spacer(1, 6))
+    elements.append(Spacer(1, 4))
 
-    # Divider Line
-    t_divider = Table([['']], colWidths=[510], rowHeights=[2])
-    t_divider.setStyle(TableStyle([('BACKGROUND', (0,0), (-1,-1), COLOR_PRIMARY)]))
+    # Garis Pembatas
+    t_divider = Table([['']], colWidths=[535], rowHeights=[2])
+    t_divider.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), COLOR_PRIMARY),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
+    ]))
     elements.append(t_divider)
-    elements.append(Spacer(1, 6))
+    elements.append(Spacer(1, 4))
 
-    # 2. METADATA
+    # 2. METADATA (DIBERIKAN PADDING AMAN AGAR TIDAK ERROR "NEGATIVE AVAILWIDTH")
     meta_data = [
-        [
-            Paragraph("Telah Terima Dari", style_label),
-            Paragraph(":", style_label),
-            Paragraph(f"{terima_dari}", style_value_bold)
-        ],
-        [
-            Paragraph("Uang Sejumlah", style_label),
-            Paragraph(":", style_label),
-            Paragraph(f"<i>\" {terbilang} \"</i>", style_terbilang)
-        ]
+        [Paragraph("Telah Terima Dari", style_label), Paragraph(":", style_label), Paragraph(f"{terima_dari}", style_value_bold)],
+        [Paragraph("Uang Sejumlah", style_label), Paragraph(":", style_label), Paragraph(f"<i>\" {terbilang} \"</i>", style_terbilang)]
     ]
-    t_meta = Table(meta_data, colWidths=[110, 10, 390])
+    t_meta = Table(meta_data, colWidths=[100, 10, 425])
     t_meta.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('LEFTPADDING', (0,0), (-1,-1), 2),
+        ('RIGHTPADDING', (0,0), (-1,-1), 2),
         ('TOPPADDING', (0,0), (-1,-1), 2),
         ('BOTTOMPADDING', (0,0), (-1,-1), 2),
     ]))
     elements.append(t_meta)
-    elements.append(Spacer(1, 8))
+    elements.append(Spacer(1, 6))
 
     # 3. TABEL DINAMIS RINCIAN BARANG
     table_items_data = [
@@ -171,33 +175,47 @@ def generate_pdf(df_items, total_val):
         Paragraph(f"<b>{total_fmt}</b>", style_tbl_cell_bold_r)
     ])
 
-    t_items = Table(table_items_data, colWidths=[30, 230, 40, 105, 105])
+    t_items = Table(table_items_data, colWidths=[30, 245, 40, 110, 110])
     t_items.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), COLOR_PRIMARY),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
         ('GRID', (0,0), (-1,-2), 0.5, COLOR_BORDER),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('LEFTPADDING', (0,0), (-1,-1), 4),
+        ('RIGHTPADDING', (0,0), (-1,-1), 4),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
         ('SPAN', (0, -1), (3, -1)),
         ('BACKGROUND', (0, -1), (-1, -1), COLOR_BG_LIGHT),
         ('BOX', (0, -1), (-1, -1), 1, COLOR_PRIMARY),
     ]))
     elements.append(t_items)
-    elements.append(Spacer(1, 10))
+    elements.append(Spacer(1, 6))
 
     # 4. FOOTER TANDA TANGAN
     footer_right = [
         [Paragraph(f"{kota}, {tanggal.strftime('%d %B %Y')}", style_date)],
         [Spacer(1, 2)],
         [Paragraph("Penerima / Bendahara,", style_sign_lbl)],
-        [Spacer(1, 28)],
+        [Spacer(1, 20)],
         [Paragraph(f"<u>( {penerima} )</u>", style_sign_name)]
     ]
     t_footer_right = Table(footer_right, colWidths=[180])
-    t_footer_right.setStyle(TableStyle([('ALIGN', (0,0), (-1,-1), 'CENTER')]))
+    t_footer_right.setStyle(TableStyle([
+        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
+    ]))
 
-    t_footer = Table([['', t_footer_right]], colWidths=[330, 180])
-    t_footer.setStyle(TableStyle([('ALIGN', (1,0), (1,0), 'RIGHT')]))
+    t_footer = Table([['', t_footer_right]], colWidths=[355, 180])
+    t_footer.setStyle(TableStyle([
+        ('ALIGN', (1,0), (1,0), 'RIGHT'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
+    ]))
     elements.append(t_footer)
 
     doc.build(elements)
