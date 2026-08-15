@@ -10,9 +10,9 @@ from datetime import date
 st.set_page_config(page_title="Digital Receipt Generator", page_icon="🧾", layout="wide")
 
 st.title("🧾 Digital Receipt Generator (Multi-Item)")
-st.caption("Generator kwitansi dengan daftar barang dinamis & kalkulator otomatis.")
+st.caption("Generator kwitansi dengan rincian barang dinamis & kalkulator subtotal otomatis.")
 
-# --- FORM INPUT UTAMA ---
+# --- FORM INPUT METADATA ---
 col_info1, col_info2 = st.columns(2)
 with col_info1:
     nama_perusahaan = st.text_input("Nama Usaha / Toko", "PT TECH INDO SEJAHTERA")
@@ -21,19 +21,21 @@ with col_info1:
     tanggal = st.date_input("Tanggal Transaksi", date.today())
 
 with col_info2:
-    kota = st.text_input("Kota Transaksi", "Jakarta")
+    kota = st.text_input("Kota Transaksi", "Bekasi")
     penerima = st.text_input("Nama Penerima", "Budi Santoso")
-    terbilang = st.text_input("Terbilang (Manual/Opsional)", "Dua Belas Juta Tiga Ratus Ribu Rupiah")
+    terbilang = st.text_input("Terbilang (Manual/Opsional)", "Tiga Ratus Ribu Rupiah")
 
 st.subheader("📦 Rincian Barang / Layanan")
-st.caption("Klik tombol '+' di bawah tabel untuk menambah baris barang baru.")
+st.caption("Ubah nilai Qty/Harga atau klik '+' di bawah tabel untuk menambah baris baru.")
 
-# --- TABEL INPUT BARANG DINAMIS ---
+# --- DATA DEFAULT ---
 default_data = pd.DataFrame([
-    {"Nama Barang": "Laptop Asus Zenbook", "Qty": 1, "Harga Satuan": 12000000},
-    {"Nama Barang": "Mouse Wireless Logitech", "Qty": 2, "Harga Satuan": 150000},
+    {"Nama Barang": "Laptop Asus Zenbook", "Qty": 1, "Harga Satuan": 100000},
+    {"Nama Barang": "Mouse Wireless Logitech", "Qty": 2, "Harga Satuan": 100000},
 ])
+default_data["Subtotal"] = default_data["Qty"] * default_data["Harga Satuan"]
 
+# --- TABEL INPUT INTERAKTIF ---
 edited_df = st.data_editor(
     default_data,
     num_rows="dynamic",
@@ -42,20 +44,21 @@ edited_df = st.data_editor(
         "Nama Barang": st.column_config.TextColumn("Nama Barang / Deskripsi", required=True),
         "Qty": st.column_config.NumberColumn("Qty", min_value=1, default=1, step=1),
         "Harga Satuan": st.column_config.NumberColumn("Harga Satuan (Rp)", min_value=0, format="Rp %d"),
+        "Subtotal": st.column_config.NumberColumn("Subtotal (Rp)", format="Rp %d", disabled=True),
     }
 )
 
-# --- KALKULASI OTOMATIS ---
+# --- REKALKULASI OTOMATIS ---
 edited_df["Subtotal"] = edited_df["Qty"] * edited_df["Harga Satuan"]
 total_nominal = edited_df["Subtotal"].sum()
 
-# Tampilan Card Summary Total
+# Display Total Akhir
 st.metric("Total Pembayaran Otomatis", f"Rp {total_nominal:,.0f}".replace(",", "."))
 
 btn_generate = st.button("🔨 Generate PDF Kwitansi Multi-Item", type="primary", use_container_width=True)
 
 
-# --- PDF GENERATOR (REPORTLAB MULTI-ITEM) ---
+# --- FUNCTION GENERATE PDF (REPORTLAB) ---
 def generate_pdf(df_items, total_val):
     buffer = io.BytesIO()
     
@@ -110,13 +113,13 @@ def generate_pdf(df_items, total_val):
     elements.append(t_header)
     elements.append(Spacer(1, 6))
 
-    # Divider
+    # Divider Line
     t_divider = Table([['']], colWidths=[510], rowHeights=[2])
     t_divider.setStyle(TableStyle([('BACKGROUND', (0,0), (-1,-1), COLOR_PRIMARY)]))
     elements.append(t_divider)
     elements.append(Spacer(1, 6))
 
-    # 2. METADATA (Diterima Dari & Terbilang)
+    # 2. METADATA
     meta_data = [
         [
             Paragraph("Telah Terima Dari", style_label),
@@ -138,7 +141,7 @@ def generate_pdf(df_items, total_val):
     elements.append(t_meta)
     elements.append(Spacer(1, 8))
 
-    # 3. TABEL RINCIAN BARANG (DYNAMIC ROWS)
+    # 3. TABEL DINAMIS RINCIAN BARANG
     table_items_data = [
         [
             Paragraph("No", style_tbl_header),
@@ -160,7 +163,7 @@ def generate_pdf(df_items, total_val):
             Paragraph(subtotal_fmt, style_tbl_cell_right)
         ])
 
-    # Row Total Akhir
+    # Row Total Bayar
     total_fmt = f"Rp {total_val:,.0f}".replace(",", ".")
     table_items_data.append([
         Paragraph("<b>TOTAL BAYAR</b>", style_tbl_cell_bold_r),
@@ -175,7 +178,6 @@ def generate_pdf(df_items, total_val):
         ('GRID', (0,0), (-1,-2), 0.5, COLOR_BORDER),
         ('TOPPADDING', (0,0), (-1,-1), 4),
         ('BOTTOMPADDING', (0,0), (-1,-1), 4),
-        # Style untuk Row Total Bayar di paling bawah
         ('SPAN', (0, -1), (3, -1)),
         ('BACKGROUND', (0, -1), (-1, -1), COLOR_BG_LIGHT),
         ('BOX', (0, -1), (-1, -1), 1, COLOR_PRIMARY),
@@ -183,7 +185,7 @@ def generate_pdf(df_items, total_val):
     elements.append(t_items)
     elements.append(Spacer(1, 10))
 
-    # 4. FOOTER (Tanda Tangan)
+    # 4. FOOTER TANDA TANGAN
     footer_right = [
         [Paragraph(f"{kota}, {tanggal.strftime('%d %B %Y')}", style_date)],
         [Spacer(1, 2)],
@@ -202,15 +204,16 @@ def generate_pdf(df_items, total_val):
     buffer.seek(0)
     return buffer
 
-# --- DOWNLOAD ACTION ---
+
+# --- TOMBOL GENERATE & DOWNLOAD ---
 if btn_generate:
     if edited_df.empty or total_nominal == 0:
         st.error("Daftar barang tidak boleh kosong!")
     else:
         pdf_buf = generate_pdf(edited_df, total_nominal)
-        st.success("Kwitansi multi-item berhasil dibuat!")
+        st.success("Kwitansi PDF berhasil dibuat!")
         st.download_button(
-            label="📥 Download PDF Kwitansi Rincian Barang",
+            label="📥 Download Kwitansi PDF",
             data=pdf_buf,
             file_name=f"Kwitansi_{no_kwitansi}.pdf",
             mime="application/pdf",
