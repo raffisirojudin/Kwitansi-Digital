@@ -12,7 +12,7 @@ from pdf2image import convert_from_bytes
 st.set_page_config(page_title="Digital Receipt Generator Pro", page_icon="🧾", layout="wide")
 
 st.title("🧾 Digital Receipt Generator Pro")
-st.caption("Generator kwitansi multi-item dengan custom warna, logo, dan export PDF/Excel/PNG.")
+st.caption("Generator kwitansi multi-item dengan custom warna, logo, info penjual, dan export PDF/Excel/PNG.")
 
 # --- SIDEBAR: CUSTOMISASI TEMA & LOGO ---
 st.sidebar.header("🎨 Desain & Branding")
@@ -34,15 +34,28 @@ theme = COLOR_PRESETS[selected_theme_name]
 # --- FORM INPUT METADATA ---
 col_info1, col_info2 = st.columns(2)
 with col_info1:
+    st.markdown("### 🏢 Informasi Penjual / Toko")
     nama_perusahaan = st.text_input("Nama Usaha / Toko", "PT TECH INDO SEJAHTERA")
+    alamat_perusahaan = st.text_input("Alamat Toko", "Jl. Jend. Sudirman No. 45, Jakarta Pusat")
+    telepon_perusahaan = st.text_input("No. Telp / WhatsApp", "0812-3456-7890")
+    
+    st.markdown("### 📝 Detail Transaksi")
     no_kwitansi = st.text_input("No. Kwitansi", "KW-2026/08/001")
     terima_dari = st.text_input("Telah Terima Dari", "PT Maju Bersama")
-    tanggal = st.date_input("Tanggal Transaksi", date.today())
 
 with col_info2:
+    st.markdown("### 📍 Lokasi & Tanggal")
     kota = st.text_input("Kota Transaksi", "Bekasi")
-    penerima = st.text_input("Nama Penerima", "Budi Santoso")
+    tanggal = st.date_input("Tanggal Transaksi", date.today())
+    penerima = st.text_input("Nama Penerima / Kasir", "Budi Santoso")
     terbilang = st.text_input("Terbilang (Manual/Opsional)", "Tiga Ratus Ribu Rupiah")
+    
+    st.markdown("### 💳 Info Rekening / Catatan Pembayaran")
+    catatan_pembayaran = st.text_area(
+        "No. Rekening & Catatan Tambahan",
+        "Pembayaran via Transfer:\nBCA: 1234-567-890 a.n PT Tech Indo\nMandiri: 9876-543-210 a.n PT Tech Indo",
+        height=90
+    )
 
 st.subheader("📦 Rincian Barang / Layanan")
 
@@ -78,22 +91,28 @@ st.metric("Total Pembayaran Otomatis", f"Rp {total_nominal:,.0f}".replace(",", "
 def generate_excel(df_items, total_val):
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        df_items.to_excel(writer, sheet_name='Kwitansi', index=False, startrow=6)
+        df_items.to_excel(writer, sheet_name='Kwitansi', index=False, startrow=8)
         workbook  = writer.book
         worksheet = writer.sheets['Kwitansi']
         
         fmt_title = workbook.add_format({'bold': True, 'font_size': 14})
+        fmt_sub = workbook.add_format({'font_size': 9, 'color': '#64748B'})
         fmt_header = workbook.add_format({'bold': True, 'bg_color': theme["primary"], 'font_color': 'white'})
         fmt_bold_currency = workbook.add_format({'bold': True, 'num_format': 'Rp #,##0'})
 
         worksheet.write('A1', nama_perusahaan.upper(), fmt_title)
-        worksheet.write('A2', f"No. Kwitansi: {no_kwitansi}")
-        worksheet.write('A3', f"Terima Dari: {terima_dari}")
-        worksheet.write('A4', f"Tanggal: {tanggal.strftime('%d-%m-%Y')}")
+        worksheet.write('A2', f"Alamat: {alamat_perusahaan} | Telp: {telepon_perusahaan}", fmt_sub)
+        worksheet.write('A4', f"No. Kwitansi: {no_kwitansi}")
+        worksheet.write('A5', f"Terima Dari: {terima_dari}")
+        worksheet.write('A6', f"Tanggal: {tanggal.strftime('%d-%m-%Y')}")
         
-        total_row_idx = len(df_items) + 7
+        total_row_idx = len(df_items) + 9
         worksheet.write(f'C{total_row_idx}', 'TOTAL BAYAR', fmt_header)
-        worksheet.write(f'D{total_row_idx}', f'=SUM(D7:D{total_row_idx-1})', fmt_bold_currency)
+        worksheet.write(f'D{total_row_idx}', f'=SUM(D9:D{total_row_idx-1})', fmt_bold_currency)
+
+        # Catatan Pembayaran di Excel
+        worksheet.write(f'A{total_row_idx+2}', 'Info Pembayaran / Catatan:')
+        worksheet.write(f'A{total_row_idx+3}', catatan_pembayaran)
         
     output.seek(0)
     return output
@@ -113,13 +132,15 @@ def generate_pdf(df_items, total_val, logo_file):
     col_border = colors.HexColor('#CBD5E1')
 
     styles = getSampleStyleSheet()
-    style_comp_title = ParagraphStyle('CompTitle', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=12, leading=14, textColor=col_primary)
-    style_comp_sub = ParagraphStyle('CompSub', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7, leading=9, textColor=col_muted)
+    style_comp_title = ParagraphStyle('CompTitle', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=11, leading=13, textColor=col_primary)
+    style_comp_sub = ParagraphStyle('CompSub', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=6.5, leading=8, textColor=col_muted)
+    style_comp_addr = ParagraphStyle('CompAddr', parent=styles['Normal'], fontName='Helvetica', fontSize=6.5, leading=8, textColor=col_muted)
+    
     style_doc_title = ParagraphStyle('DocTitle', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=13, leading=15, alignment=2, textColor=col_text)
     style_doc_no = ParagraphStyle('DocNo', parent=styles['Normal'], fontName='Courier-Bold', fontSize=8.5, leading=10, alignment=2, textColor=col_secondary)
     
     style_label = ParagraphStyle('Label', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, leading=10, textColor=col_muted)
-    style_value_bold = ParagraphStyle('ValueBold', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=9, leading=11, textColor=col_text)
+    style_value_bold = ParagraphStyle('ValueBold', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, leading=11, textColor=col_text)
     style_terbilang = ParagraphStyle('Terbilang', parent=styles['Normal'], fontName='Helvetica-Oblique', fontSize=8, leading=10, textColor=col_primary)
     
     style_tbl_header = ParagraphStyle('TblHdr', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, leading=10, textColor=colors.white)
@@ -127,23 +148,27 @@ def generate_pdf(df_items, total_val, logo_file):
     style_tbl_cell_right = ParagraphStyle('TblCellR', parent=styles['Normal'], fontName='Helvetica', fontSize=8, leading=10, alignment=2, textColor=col_text)
     style_tbl_cell_bold_r = ParagraphStyle('TblCellBR', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, leading=11, alignment=2, textColor=col_primary)
 
+    style_note_hdr = ParagraphStyle('NoteHdr', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7.5, leading=9, textColor=col_primary)
+    style_note_body = ParagraphStyle('NoteBody', parent=styles['Normal'], fontName='Helvetica', fontSize=7, leading=9, textColor=col_muted)
+
     style_date = ParagraphStyle('DateText', parent=styles['Normal'], fontName='Helvetica', fontSize=8, leading=10, textColor=col_muted)
     style_sign_lbl = ParagraphStyle('SignLbl', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, leading=10, alignment=1, textColor=col_muted)
     style_sign_name = ParagraphStyle('SignName', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, leading=11, alignment=1, textColor=col_text)
 
     elements = []
 
-    # Header dengan Logo (Opsional)
+    # Header dengan Info Penjual & Logo
     company_cell = [
         Paragraph(f"<b>{nama_perusahaan.upper()}</b>", style_comp_title),
+        Paragraph(f"{alamat_perusahaan} | Telp: {telepon_perusahaan}", style_comp_addr),
         Paragraph("BUKTI PEMBAYARAN RESMI DIGITAL", style_comp_sub)
     ]
     
     if logo_file:
         img_data = io.BytesIO(logo_file.getvalue())
-        rl_img = RLImage(img_data, width=40, height=40)
+        rl_img = RLImage(img_data, width=38, height=38)
         rl_img.hAlign = 'LEFT'
-        header_left = Table([[rl_img, company_cell]], colWidths=[45, 240])
+        header_left = Table([[rl_img, company_cell]], colWidths=[42, 243])
         header_left.setStyle(TableStyle([
             ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
             ('LEFTPADDING', (0,0), (-1,-1), 0),
@@ -186,7 +211,7 @@ def generate_pdf(df_items, total_val, logo_file):
     elements.append(t_meta)
     elements.append(Spacer(1, 6))
 
-    # Tabel Rincian Barang (Safe Formatting)
+    # Tabel Rincian Barang
     table_items_data = [[
         Paragraph("No", style_tbl_header), Paragraph("Nama Barang / Deskripsi", style_tbl_header),
         Paragraph("Qty", style_tbl_header), Paragraph("Harga Satuan", style_tbl_header), Paragraph("Subtotal", style_tbl_header)
@@ -227,19 +252,38 @@ def generate_pdf(df_items, total_val, logo_file):
     elements.append(t_items)
     elements.append(Spacer(1, 6))
 
-    # Tanda Tangan
+    # Footer (Info Rekening + Tanda Tangan)
+    formatted_catatan = catatan_pembayaran.replace('\n', '<br/>')
+    footer_left = [
+        [Paragraph("<b>Informasi Pembayaran / Catatan:</b>", style_note_hdr)],
+        [Paragraph(formatted_catatan, style_note_body)]
+    ]
+    t_footer_left = Table(footer_left, colWidths=[330])
+    t_footer_left.setStyle(TableStyle([
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
+    ]))
+
     footer_right = [
         [Paragraph(f"{kota}, {tanggal.strftime('%d %B %Y')}", style_date)],
         [Spacer(1, 2)],
         [Paragraph("Penerima / Bendahara,", style_sign_lbl)],
-        [Spacer(1, 20)],
+        [Spacer(1, 18)],
         [Paragraph(f"<u>( {penerima} )</u>", style_sign_name)]
     ]
     t_footer_right = Table(footer_right, colWidths=[180])
     t_footer_right.setStyle(TableStyle([('ALIGN', (0,0), (-1,-1), 'CENTER')]))
 
-    t_footer = Table([['', t_footer_right]], colWidths=[355, 180])
-    t_footer.setStyle(TableStyle([('ALIGN', (1,0), (1,0), 'RIGHT')]))
+    t_footer = Table([[t_footer_left, t_footer_right]], colWidths=[340, 195])
+    t_footer.setStyle(TableStyle([
+        ('VALIGN', (0,0), (-1,-1), 'TOP'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
+    ]))
     elements.append(t_footer)
 
     doc.build(elements)
@@ -282,7 +326,7 @@ with col_exp2:
             mime="image/png",
             use_container_width=True
         )
-    except Exception as e:
+    except Exception:
         st.warning("Gunakan PDF atau pasang poppler-utils untuk konversi PNG.")
 
 with col_exp3:
@@ -311,10 +355,15 @@ for idx, row in edited_df.iterrows():
     items_html += f"<tr><td style='padding:6px;border-bottom:1px solid #E2E8F0;'>{idx+1}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;'>{row['Nama Barang']}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;text-align:right;'>{qty_v}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;text-align:right;'>{h_fmt}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;text-align:right;'>{s_fmt}</td></tr>"
 
 tot_fmt = f"Rp {total_nominal:,.0f}".replace(",", ".")
+html_catatan = catatan_pembayaran.replace('\n', '<br/>')
 
 preview_html = f"""<div style="border:2px solid {theme['primary']};border-radius:8px;padding:20px;background-color:#FFFFFF;color:#0F172A;font-family:sans-serif;">
 <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid {theme['primary']};padding-bottom:10px;">
-<div><h2 style="margin:0;color:{theme['primary']};">{nama_perusahaan.upper()}</h2><small style="color:#64748B;">BUKTI PEMBAYARAN RESMI DIGITAL</small></div>
+<div>
+    <h2 style="margin:0;color:{theme['primary']};">{nama_perusahaan.upper()}</h2>
+    <div style="font-size:11px;color:#64748B;">{alamat_perusahaan} | Telp: {telepon_perusahaan}</div>
+    <small style="color:#64748B;">BUKTI PEMBAYARAN RESMI DIGITAL</small>
+</div>
 <div style="text-align:right;"><h3 style="margin:0;color:#0F172A;">KWITANSI PEMBAYARAN</h3><span style="color:{theme['secondary']};font-family:monospace;">NO: {no_kwitansi}</span></div>
 </div>
 <div style="margin:15px 0;font-size:14px;">
@@ -328,12 +377,18 @@ preview_html = f"""<div style="border:2px solid {theme['primary']};border-radius
 <tr style="background-color:{theme['bg_light']};font-weight:bold;color:{theme['primary']};"><td colspan="4" style="padding:8px;text-align:right;">TOTAL BAYAR</td><td style="padding:8px;text-align:right;">{tot_fmt}</td></tr>
 </tbody>
 </table>
-<div style="margin-top:30px;text-align:right;font-size:12px;color:#64748B;">
-<p style="margin:0;">{kota}, {tanggal.strftime('%d %B %Y')}</p>
-<p style="margin:0;">Penerima / Bendahara,</p>
-<br><br>
-<p style="margin:0;font-weight:bold;color:#0F172A;"><u>( {penerima} )</u></p>
+<div style="display:flex;justify-content:space-between;margin-top:20px;font-size:12px;">
+<div style="max-width:60%;color:#64748B;">
+    <strong style="color:{theme['primary']};">Informasi Pembayaran / Catatan:</strong><br/>
+    <span>{html_catatan}</span>
+</div>
+<div style="text-align:right;color:#64748B;">
+    <p style="margin:0;">{kota}, {tanggal.strftime('%d %B %Y')}</p>
+    <p style="margin:0;">Penerima / Bendahara,</p>
+    <br><br>
+    <p style="margin:0;font-weight:bold;color:#0F172A;"><u>( {penerima} )</u></p>
+</div>
 </div>
 </div>"""
 
-st.components.v1.html(preview_html, height=450, scrolling=True)
+st.components.v1.html(preview_html, height=500, scrolling=True)
