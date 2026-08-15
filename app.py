@@ -30,18 +30,16 @@ with st.form("receipt_form"):
     submitted = st.form_submit_button("🔨 Generate PDF Kwitansi Modern")
 
 
-# --- PDF GENERATOR (PROFESSIONAL DESIGN) ---
+# --- PDF GENERATOR (REVISED PROFESSIONAL DESIGN) ---
 def generate_pdf():
     buffer = io.BytesIO()
     
-    # Target A5 Landscape (Rasio Pas Kwitansi)
     doc = SimpleDocTemplate(
         buffer,
         pagesize=landscape(A5),
         rightMargin=25, leftMargin=25, topMargin=20, bottomMargin=20
     )
     
-    # Color Palette Corporate
     COLOR_PRIMARY = colors.HexColor('#1E3A8A')   # Navy Blue
     COLOR_SECONDARY = colors.HexColor('#3B82F6') # Accent Blue
     COLOR_TEXT = colors.HexColor('#0F172A')      # Dark Slate
@@ -51,7 +49,6 @@ def generate_pdf():
 
     styles = getSampleStyleSheet()
     
-    # Custom Typography Styles
     style_comp_title = ParagraphStyle('CompTitle', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=14, leading=16, textColor=COLOR_PRIMARY)
     style_comp_sub = ParagraphStyle('CompSub', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7, leading=9, textColor=COLOR_MUTED)
     
@@ -62,9 +59,7 @@ def generate_pdf():
     style_value = ParagraphStyle('Value', parent=styles['Normal'], fontName='Helvetica', fontSize=9.5, leading=13, textColor=COLOR_TEXT)
     style_value_bold = ParagraphStyle('ValueBold', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=10, leading=13, textColor=COLOR_TEXT)
     style_terbilang = ParagraphStyle('Terbilang', parent=styles['Normal'], fontName='Helvetica-Oblique', fontSize=9, leading=12, textColor=COLOR_PRIMARY)
-    
-    style_amount_lbl = ParagraphStyle('AmtLbl', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7, textColor=colors.white)
-    style_amount_val = ParagraphStyle('AmtVal', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=14, textColor=colors.white)
+    style_amount_val = ParagraphStyle('AmtVal', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=14, leading=16, textColor=COLOR_PRIMARY)
     
     style_date = ParagraphStyle('DateText', parent=styles['Normal'], fontName='Helvetica', fontSize=8.5, textColor=COLOR_MUTED)
     style_sign_lbl = ParagraphStyle('SignLbl', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, alignment=1, textColor=COLOR_MUTED)
@@ -72,7 +67,7 @@ def generate_pdf():
 
     elements = []
 
-    # 1. HEADER (Perusahaan & Judul Kwitansi)
+    # 1. HEADER
     header_data = [
         [
             Paragraph(f"<b>{nama_perusahaan.upper()}</b>", style_comp_title),
@@ -91,7 +86,7 @@ def generate_pdf():
     elements.append(t_header)
     elements.append(Spacer(1, 8))
 
-    # Garis Pembatas Aksen (Divider)
+    # Divider Line
     t_divider = Table([['']], colWidths=[510], rowHeights=[2])
     t_divider.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), COLOR_PRIMARY),
@@ -99,9 +94,10 @@ def generate_pdf():
         ('TOPPADDING', (0,0), (-1,-1), 0),
     ]))
     elements.append(t_divider)
-    elements.append(Spacer(1, 12))
+    elements.append(Spacer(1, 10))
 
-    # 2. CONTENT TABLE (Detail Pembayaran)
+    # 2. CONTENT TABLE (Termasuk Jumlah Rp Sejajar)
+    formatted_nominal = f"Rp {nominal:,.0f}".replace(",", ".")
     content_data = [
         [
             Paragraph("Telah Terima Dari", style_label),
@@ -117,40 +113,40 @@ def generate_pdf():
             Paragraph("Untuk Pembayaran", style_label),
             Paragraph(":", style_label),
             Paragraph(f"{keperluan}", style_value)
+        ],
+        [
+            Paragraph("Jumlah Rp", style_label),
+            Paragraph(":", style_label),
+            Paragraph(f"<b>{formatted_nominal}</b>", style_amount_val)
         ]
     ]
     t_content = Table(content_data, colWidths=[120, 15, 375])
     t_content.setStyle(TableStyle([
-        ('VALIGN', (0,0), (-1,-1), 'TOP'),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 6),
-        # Box background untuk row 'Terbilang'
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('TOPPADDING', (0,0), (-1,-1), 5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+        # Terbilang Box Fill
         ('BACKGROUND', (2,1), (2,1), COLOR_BG_BOX),
         ('BOX', (2,1), (2,1), 0.5, COLOR_BORDER),
         ('LEFTPADDING', (2,1), (2,1), 8),
         ('RIGHTPADDING', (2,1), (2,1), 8),
+        # Nominal Box Accent Fill (Elegan & Sejajar)
+        ('BACKGROUND', (2,3), (2,3), COLOR_BG_BOX),
+        ('BOX', (2,3), (2,3), 1, COLOR_PRIMARY),
+        ('LEFTPADDING', (2,3), (2,3), 10),
+        ('RIGHTPADDING', (2,3), (2,3), 10),
+        ('TOPPADDING', (2,3), (2,3), 6),
+        ('BOTTOMPADDING', (2,3), (2,3), 6),
     ]))
     elements.append(t_content)
-    elements.append(Spacer(1, 12))
+    elements.append(Spacer(1, 15))
 
-    # 3. FOOTER SECTION (Kotak Nominal & Tanda Tangan)
-    box_amount = Table([
-        [Paragraph("TOTAL PEMBAYARAN", style_amount_lbl)],
-        [Paragraph(f"Rp {nominal:,.0f}".replace(",", "."), style_amount_val)]
-    ], colWidths=[180])
-    box_amount.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), COLOR_PRIMARY),
-        ('TOPPADDING', (0,0), (-1,-1), 6),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 6),
-        ('LEFTPADDING', (0,0), (-1,-1), 12),
-        ('RIGHTPADDING', (0,0), (-1,-1), 12),
-    ]))
-
+    # 3. FOOTER (Tanggal & Tanda Tangan)
     footer_right = [
         [Paragraph(f"{kota}, {tanggal.strftime('%d %B %Y')}", style_date)],
         [Spacer(1, 4)],
         [Paragraph("Penerima / Bendahara,", style_sign_lbl)],
-        [Spacer(1, 35)], # Space untuk Tanda Tangan
+        [Spacer(1, 35)],
         [Paragraph(f"<u>( {penerima} )</u>", style_sign_name)]
     ]
     t_footer_right = Table(footer_right, colWidths=[200])
@@ -159,12 +155,9 @@ def generate_pdf():
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
     ]))
 
-    footer_wrapper = [
-        [box_amount, t_footer_right]
-    ]
-    t_footer = Table(footer_wrapper, colWidths=[260, 250])
+    t_footer = Table([['', t_footer_right]], colWidths=[310, 200])
     t_footer.setStyle(TableStyle([
-        ('VALIGN', (0,0), (-1,-1), 'BOTTOM'),
+        ('VALIGN', (0,0), (-1,-1), 'TOP'),
         ('ALIGN', (1,0), (1,0), 'RIGHT'),
     ]))
     elements.append(t_footer)
@@ -173,13 +166,12 @@ def generate_pdf():
     buffer.seek(0)
     return buffer
 
-
 # --- DOWNLOAD BUTTON ---
 if submitted:
     pdf_buffer = generate_pdf()
-    st.success("Kwitansi modern berhasil diproses!")
+    st.success("Kwitansi berhasil direvisi!")
     st.download_button(
-        label="📥 Download Kwitansi PDF (Modern Design)",
+        label="📥 Download Kwitansi PDF (Revisi Modern)",
         data=pdf_buffer,
         file_name=f"Kwitansi_{no_kwitansi}.pdf",
         mime="application/pdf",
