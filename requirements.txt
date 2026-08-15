@@ -3,3 +3,5 @@ pandas
 reportlab
 xlsxwriter
 Pillow
+openpyxl
+pdf2image
