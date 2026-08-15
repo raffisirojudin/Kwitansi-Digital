@@ -271,66 +271,42 @@ with col_exp2:
         use_container_width=True
     )
 
-# --- PREVIEW KWITANSI (HTML/DIGITAL DISPLAY) ---
+# --- PREVIEW KWITANSI (HTML FIX) ---
 st.divider()
 st.subheader("👁️ Live Preview Kwitansi Digital")
 
 items_html = ""
 for idx, row in edited_df.iterrows():
-    items_html += f"""
-    <tr>
-        <td style="padding: 6px; border-bottom: 1px solid #E2E8F0;">{idx + 1}</td>
-        <td style="padding: 6px; border-bottom: 1px solid #E2E8F0;">{row['Nama Barang']}</td>
-        <td style="padding: 6px; border-bottom: 1px solid #E2E8F0; text-align: right;">{row['Qty']}</td>
-        <td style="padding: 6px; border-bottom: 1px solid #E2E8F0; text-align: right;">Rp {row['Harga Satuan']:,.0f}</td>
-        <td style="padding: 6px; border-bottom: 1px solid #E2E8F0; text-align: right;">Rp {row['Subtotal']:,.0f}</td>
-    </tr>
-    """.replace(",", ".")
+    subtotal_val = row['Qty'] * row['Harga Satuan']
+    h_fmt = f"Rp {row['Harga Satuan']:,.0f}".replace(",", ".")
+    s_fmt = f"Rp {subtotal_val:,.0f}".replace(",", ".")
+    items_html += f"<tr><td style='padding:6px;border-bottom:1px solid #E2E8F0;'>{idx+1}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;'>{row['Nama Barang']}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;text-align:right;'>{row['Qty']}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;text-align:right;'>{h_fmt}</td><td style='padding:6px;border-bottom:1px solid #E2E8F0;text-align:right;'>{s_fmt}</td></tr>"
 
-preview_html = f"""
-<div style="border: 2px solid {theme['primary']}; border-radius: 8px; padding: 20px; background-color: #FFFFFF; color: #0F172A; font-family: sans-serif;">
-    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid {theme['primary']}; padding-bottom: 10px;">
-        <div>
-            <h2 style="margin: 0; color: {theme['primary']};">{nama_perusahaan.upper()}</h2>
-            <small style="color: #64748B;">BUKTI PEMBAYARAN RESMI DIGITAL</small>
-        </div>
-        <div style="text-align: right;">
-            <h3 style="margin: 0; color: #0F172A;">KWITANSI PEMBAYARAN</h3>
-            <span style="color: {theme['secondary']}; font-family: monospace;">NO: {no_kwitansi}</span>
-        </div>
-    </div>
-    
-    <div style="margin: 15px 0; font-size: 14px;">
-        <p style="margin: 4px 0;"><strong>Telah Terima Dari:</strong> {terima_dari}</p>
-        <p style="margin: 4px 0; color: {theme['primary']};"><strong>Uang Sejumlah:</strong> <i>"{terbilang}"</i></p>
-    </div>
+tot_fmt = f"Rp {total_nominal:,.0f}".replace(",", ".")
 
-    <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px;">
-        <thead>
-            <tr style="background-color: {theme['primary']}; color: white; text-align: left;">
-                <th style="padding: 6px;">No</th>
-                <th style="padding: 6px;">Nama Barang / Deskripsi</th>
-                <th style="padding: 6px; text-align: right;">Qty</th>
-                <th style="padding: 6px; text-align: right;">Harga Satuan</th>
-                <th style="padding: 6px; text-align: right;">Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            {items_html}
-            <tr style="background-color: {theme['bg_light']}; font-weight: bold; color: {theme['primary']};">
-                <td colspan="4" style="padding: 8px; text-align: right;">TOTAL BAYAR</td>
-                <td style="padding: 8px; text-align: right;">Rp {total_nominal:,.0f}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div style="margin-top: 30px; text-align: right; font-size: 12px; color: #64748B;">
-        <p style="margin: 0;">{kota}, {tanggal.strftime('%d %B %Y')}</p>
-        <p style="margin: 0;">Penerima / Bendahara,</p>
-        <br><br>
-        <p style="margin: 0; font-weight: bold; color: #0F172A;"><u>( {penerima} )</u></p>
-    </div>
+# String HTML tanpa indentasi awal agar tidak dianggap codeblock oleh Streamlit
+preview_html = f"""<div style="border:2px solid {theme['primary']};border-radius:8px;padding:20px;background-color:#FFFFFF;color:#0F172A;font-family:sans-serif;">
+<div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid {theme['primary']};padding-bottom:10px;">
+<div><h2 style="margin:0;color:{theme['primary']};">{nama_perusahaan.upper()}</h2><small style="color:#64748B;">BUKTI PEMBAYARAN RESMI DIGITAL</small></div>
+<div style="text-align:right;"><h3 style="margin:0;color:#0F172A;">KWITANSI PEMBAYARAN</h3><span style="color:{theme['secondary']};font-family:monospace;">NO: {no_kwitansi}</span></div>
 </div>
-""".replace(",", ".")
+<div style="margin:15px 0;font-size:14px;">
+<p style="margin:4px 0;"><strong>Telah Terima Dari:</strong> {terima_dari}</p>
+<p style="margin:4px 0;color:{theme['primary']};"><strong>Uang Sejumlah:</strong> <i>"{terbilang}"</i></p>
+</div>
+<table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;">
+<thead><tr style="background-color:{theme['primary']};color:white;text-align:left;"><th style="padding:6px;">No</th><th style="padding:6px;">Nama Barang / Deskripsi</th><th style="padding:6px;text-align:right;">Qty</th><th style="padding:6px;text-align:right;">Harga Satuan</th><th style="padding:6px;text-align:right;">Subtotal</th></tr></thead>
+<tbody>
+{items_html}
+<tr style="background-color:{theme['bg_light']};font-weight:bold;color:{theme['primary']};"><td colspan="4" style="padding:8px;text-align:right;">TOTAL BAYAR</td><td style="padding:8px;text-align:right;">{tot_fmt}</td></tr>
+</tbody>
+</table>
+<div style="margin-top:30px;text-align:right;font-size:12px;color:#64748B;">
+<p style="margin:0;">{kota}, {tanggal.strftime('%d %B %Y')}</p>
+<p style="margin:0;">Penerima / Bendahara,</p>
+<br><br>
+<p style="margin:0;font-weight:bold;color:#0F172A;"><u>( {penerima} )</u></p>
+</div>
+</div>"""
 
-st.markdown(preview_html, unsafe_allow_html=True)
+st.components.v1.html(preview_html, height=450, scrolling=True)
