@@ -7,6 +7,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 import io
 from datetime import date
 from PIL import Image
+from pdf2image import convert_from_bytes
 
 st.set_page_config(page_title="Digital Receipt Generator Pro", page_icon="🧾", layout="wide")
 
@@ -71,32 +72,24 @@ total_nominal = edited_df["Subtotal"].sum()
 
 st.metric("Total Pembayaran Otomatis", f"Rp {total_nominal:,.0f}".replace(",", "."))
 
+# --- HELPER FUNCTIONS ---
 
-# --- HELPER FUNCTIONS FOR EXPORT ---
-
-# 1. GENERATE EXCEL (.xlsx)
 def generate_excel(df_items, total_val):
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        # Sheet Data Utama
         df_items.to_excel(writer, sheet_name='Kwitansi', index=False, startrow=6)
-        
         workbook  = writer.book
         worksheet = writer.sheets['Kwitansi']
         
-        # Formatting Excel
         fmt_title = workbook.add_format({'bold': True, 'font_size': 14})
         fmt_header = workbook.add_format({'bold': True, 'bg_color': theme["primary"], 'font_color': 'white'})
-        fmt_currency = workbook.add_format({'num_format': 'Rp #,##0'})
         fmt_bold_currency = workbook.add_format({'bold': True, 'num_format': 'Rp #,##0'})
 
-        # Header Metadata
         worksheet.write('A1', nama_perusahaan.upper(), fmt_title)
         worksheet.write('A2', f"No. Kwitansi: {no_kwitansi}")
         worksheet.write('A3', f"Terima Dari: {terima_dari}")
         worksheet.write('A4', f"Tanggal: {tanggal.strftime('%d-%m-%Y')}")
         
-        # Total Bayar Row
         total_row_idx = len(df_items) + 7
         worksheet.write(f'C{total_row_idx}', 'TOTAL BAYAR', fmt_header)
         worksheet.write(f'D{total_row_idx}', f'=SUM(D7:D{total_row_idx-1})', fmt_bold_currency)
@@ -104,8 +97,6 @@ def generate_excel(df_items, total_val):
     output.seek(0)
     return output
 
-
-# 2. GENERATE PDF (ReportLab) WITH LOGO & CUSTOM COLOR
 def generate_pdf(df_items, total_val, logo_file):
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(
@@ -141,7 +132,6 @@ def generate_pdf(df_items, total_val, logo_file):
 
     elements = []
 
-    # Prepare Header with Optional Logo
     company_cell = [
         Paragraph(f"<b>{nama_perusahaan.upper()}</b>", style_comp_title),
         Paragraph("BUKTI PEMBAYARAN RESMI DIGITAL", style_comp_sub)
@@ -170,13 +160,11 @@ def generate_pdf(df_items, total_val, logo_file):
     elements.append(t_header)
     elements.append(Spacer(1, 4))
 
-    # Divider
     t_divider = Table([['']], colWidths=[535], rowHeights=[2])
     t_divider.setStyle(TableStyle([('BACKGROUND', (0,0), (-1,-1), col_primary)]))
     elements.append(t_divider)
     elements.append(Spacer(1, 4))
 
-    # Metadata
     meta_data = [
         [Paragraph("Telah Terima Dari", style_label), Paragraph(":", style_label), Paragraph(f"{terima_dari}", style_value_bold)],
         [Paragraph("Uang Sejumlah", style_label), Paragraph(":", style_label), Paragraph(f"<i>\" {terbilang} \"</i>", style_terbilang)]
@@ -190,7 +178,6 @@ def generate_pdf(df_items, total_val, logo_file):
     elements.append(t_meta)
     elements.append(Spacer(1, 6))
 
-    # Items Table
     table_items_data = [[
         Paragraph("No", style_tbl_header), Paragraph("Nama Barang / Deskripsi", style_tbl_header),
         Paragraph("Qty", style_tbl_header), Paragraph("Harga Satuan", style_tbl_header), Paragraph("Subtotal", style_tbl_header)
@@ -224,7 +211,6 @@ def generate_pdf(df_items, total_val, logo_file):
     elements.append(t_items)
     elements.append(Spacer(1, 6))
 
-    # Footer Sign
     footer_right = [
         [Paragraph(f"{kota}, {tanggal.strftime('%d %B %Y')}", style_date)],
         [Spacer(1, 2)],
@@ -243,17 +229,27 @@ def generate_pdf(df_items, total_val, logo_file):
     buffer.seek(0)
     return buffer
 
+# Konversi PDF ke PNG Buffer
+def generate_png_from_pdf(pdf_buffer):
+    images = convert_from_bytes(pdf_buffer.getvalue())
+    img_byte_arr = io.BytesIO()
+    if images:
+        images[0].save(img_byte_arr, format='PNG')
+        img_byte_arr.seek(0)
+    return img_byte_arr
 
 # --- PANEL EXPORT MULTI-FORMAT ---
 st.subheader("📥 Export & Download Kwitansi")
 
-col_exp1, col_exp2 = st.columns(2)
+# Generate PDF Buffer Utama
+pdf_buf = generate_pdf(edited_df, total_nominal, uploaded_logo)
+
+col_exp1, col_exp2, col_exp3 = st.columns(3)
 
 with col_exp1:
-    st.markdown("##### 📄 Format PDF (Siap Cetak)")
-    pdf_buf = generate_pdf(edited_df, total_nominal, uploaded_logo)
+    st.markdown("##### 📄 Format PDF (Cetak)")
     st.download_button(
-        label="Download Kwitansi PDF",
+        label="Download PDF",
         data=pdf_buf,
         file_name=f"Kwitansi_{no_kwitansi}.pdf",
         mime="application/pdf",
@@ -261,17 +257,31 @@ with col_exp1:
     )
 
 with col_exp2:
-    st.markdown("##### 📊 Format Excel (Pembukuan)")
+    st.markdown("##### 🖼️ Format PNG (Gambar/WA)")
+    try:
+        png_buf = generate_png_from_pdf(pdf_buf)
+        st.download_button(
+            label="Download PNG",
+            data=png_buf,
+            file_name=f"Kwitansi_{no_kwitansi}.png",
+            mime="image/png",
+            use_container_width=True
+        )
+    except Exception as e:
+        st.error("Fitur PNG butuh poppler-utils. Unduh via PDF dulu.")
+
+with col_exp3:
+    st.markdown("##### 📊 Format Excel (Rekap)")
     excel_buf = generate_excel(edited_df, total_nominal)
     st.download_button(
-        label="Download Rekap Excel",
+        label="Download Excel",
         data=excel_buf,
         file_name=f"Rekap_Kwitansi_{no_kwitansi}.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         use_container_width=True
     )
 
-# --- PREVIEW KWITANSI (HTML FIX) ---
+# --- PREVIEW KWITANSI ---
 st.divider()
 st.subheader("👁️ Live Preview Kwitansi Digital")
 
@@ -284,7 +294,6 @@ for idx, row in edited_df.iterrows():
 
 tot_fmt = f"Rp {total_nominal:,.0f}".replace(",", ".")
 
-# String HTML tanpa indentasi awal agar tidak dianggap codeblock oleh Streamlit
 preview_html = f"""<div style="border:2px solid {theme['primary']};border-radius:8px;padding:20px;background-color:#FFFFFF;color:#0F172A;font-family:sans-serif;">
 <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid {theme['primary']};padding-bottom:10px;">
 <div><h2 style="margin:0;color:{theme['primary']};">{nama_perusahaan.upper()}</h2><small style="color:#64748B;">BUKTI PEMBAYARAN RESMI DIGITAL</small></div>
