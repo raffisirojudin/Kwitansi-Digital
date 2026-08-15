@@ -119,7 +119,7 @@ theme = COLOR_PRESETS[selected_theme_name]
 col_info1, col_info2 = st.columns(2)
 with col_info1:
   st.markdown("### 🏢 Informasi Penjual / Toko")
-  nama_perusahaan = st.text_input("Nama Usaha / Toko", "PT TECH INDO SEJAHTERA")
+  nama_perusahaan = st.text_input("Nama Usaha / Toko", "KURNIA GORDEN")
   alamat_perusahaan = st.text_input(
       "Alamat Toko", "Jl. Jend. Sudirman No. 45, Jakarta Pusat"
   )
@@ -127,7 +127,7 @@ with col_info1:
 
   st.markdown("### 📝 Detail Transaksi")
   no_kwitansi = st.text_input("No. Kwitansi", "KW-2026/08/001")
-  terima_dari = st.text_input("Telah Terima Dari", "PT Maju Bersama")
+  terima_dari = st.text_input("Telah Terima Dari", "Pak jajak")
 
 with col_info2:
   st.markdown("### 📍 Lokasi & Tanggal")
@@ -151,6 +151,7 @@ st.subheader("📦 Rincian Barang / Layanan")
 default_data = pd.DataFrame([
     {"Nama Barang": "Laptop Asus Zenbook", "Qty": 1, "Harga Satuan": 100000},
     {"Nama Barang": "Mouse Wireless Logitech", "Qty": 2, "Harga Satuan": 100000},
+    {"Nama Barang": "nasi uduk", "Qty": 1, "Harga Satuan": 50000},
 ])
 
 edited_df = st.data_editor(
@@ -237,7 +238,6 @@ def generate_pdf(df_items, total_val, logo_file, config_key):
   margin = config["margin"]
   item_count = len(df_items)
 
-  # Auto Height khusus format Struk Thermal 80mm
   if config["type"] == "struk":
     calc_lines = len(catatan_pembayaran.splitlines())
     calculated_h = (110 + (item_count * 8) + (calc_lines * 4)) * mm
@@ -256,7 +256,6 @@ def generate_pdf(df_items, total_val, logo_file, config_key):
 
   page_w, page_h = pagesize
   printable_w = page_w - (2 * margin)
-  printable_h = page_h - (2 * margin)
   s = config["scale"]
 
   col_primary = colors.HexColor(theme["primary"])
@@ -417,7 +416,7 @@ def generate_pdf(df_items, total_val, logo_file, config_key):
 
   elements = []
 
-  # 1. Header Toko & Logo
+  # Header Toko
   w_head_left = printable_w * 0.58
   w_head_right = printable_w * 0.42
 
@@ -464,7 +463,7 @@ def generate_pdf(df_items, total_val, logo_file, config_key):
   elements.append(t_header)
   elements.append(Spacer(1, 4 * s))
 
-  # 2. Line Divider
+  # Pembatas
   t_divider = Table([[""]], colWidths=[printable_w], rowHeights=[2 * s])
   t_divider.setStyle(
       TableStyle([("BACKGROUND", (0, 0), (-1, -1), col_primary)])
@@ -472,7 +471,7 @@ def generate_pdf(df_items, total_val, logo_file, config_key):
   elements.append(t_divider)
   elements.append(Spacer(1, 4 * s))
 
-  # 3. Metadata Transaksi
+  # Metadata
   meta_data = [
       [
           Paragraph("Telah Terima Dari", style_label),
@@ -499,7 +498,7 @@ def generate_pdf(df_items, total_val, logo_file, config_key):
   elements.append(t_meta)
   elements.append(Spacer(1, 6 * s))
 
-  # 4. Tabel Barang
+  # Tabel Barang
   table_items_data = [[
       Paragraph("No", style_tbl_header),
       Paragraph("Nama Barang / Deskripsi", style_tbl_header),
@@ -549,15 +548,10 @@ def generate_pdf(df_items, total_val, logo_file, config_key):
   )
   elements.append(t_items)
 
-  # 5. Dynamic Spacing khusus Portrait
-  if config["type"] == "portrait":
-    used_height_approx = (item_count * 15 * s) + (140 * s)
-    flexible_gap = max(10 * s, printable_h - used_height_approx)
-    elements.append(Spacer(1, flexible_gap))
-  else:
-    elements.append(Spacer(1, 8 * s))
+  # Spacing konsisten & rapat langsung setelah tabel total
+  elements.append(Spacer(1, 12 * s))
 
-  # 6. Footer (Catatan & Tanda Tangan)
+  # Footer (Catatan & Tanda Tangan)
   w_foot_left = printable_w * 0.60
   w_foot_right = printable_w * 0.40
 
